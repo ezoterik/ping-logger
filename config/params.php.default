@@ -1,0 +1,14 @@
+<?php
+
+return [
+    'adminEmail' => 'admin@example.com',
+    'users' => [
+        '100' => [
+            'id' => '100',
+            'username' => 'admin',
+            'password' => 'admin',
+            'authKey' => 'xxxxxx100',
+            'accessToken' => 'cccccc100',
+        ],
+    ],
+];

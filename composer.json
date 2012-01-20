@@ -1,0 +1,51 @@
+{
+	"name": "Ping Logger",
+	"description": "Ping Logger Application",
+	"keywords": ["ping", "admin", "utilities", "lan", "network"],
+	"homepage": "https://bitbucket.org/ezoterik/ping_logger",
+	"type": "project",
+	"license": "BSD-3-Clause",
+	"support": {
+		"source": "https://bitbucket.org/ezoterik/ping_logger"
+	},
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">=5.4.0",
+        "yiisoft/yii2": "2.0.*@dev",
+		"yiisoft/yii2-bootstrap": "*",
+		"yiisoft/yii2-swiftmailer": "*",
+        "kartik-v/yii2-icons": "dev-master"
+	},
+	"require-dev": {
+		"yiisoft/yii2-codeception": "*",
+		"yiisoft/yii2-debug": "*",
+		"yiisoft/yii2-gii": "*",
+		"yiisoft/yii2-faker": "*"
+	},
+	"suggest": {
+		"codeception/codeception": "Codeception, 1.8.*@dev is currently works well with Yii.",
+		"codeception/specify": "BDD style code blocks for PHPUnit and Codeception",
+		"codeception/verify": "BDD Assertions for PHPUnit and Codeception"
+	},
+	"scripts": {
+		"post-create-project-cmd": [
+			"yii\\composer\\Installer::setPermission"
+		]
+	},
+	"config": {
+		"process-timeout": 1800
+	},
+	"extra": {
+		"writable": [
+			"runtime",
+			"web/assets"
+		],
+		"executable": [
+			"yii"
+		],
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+	}
+}

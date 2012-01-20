@@ -1,0 +1,24 @@
+<?php
+
+$config = [
+    'components' => [
+        'request' => [
+            'cookieValidationKey' => 'XXXXXXXXX',
+        ],
+        'log' => [
+            'traceLevel' => 3,
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+            ],
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true,
+        ],
+    ],
+];
+
+return $config;

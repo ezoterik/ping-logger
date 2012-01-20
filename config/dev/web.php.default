@@ -1,0 +1,29 @@
+<?php
+
+$config = [
+    'bootstrap' => ['debug'],
+    'modules' => [
+        'debug' => 'yii\debug\Module',
+        'gii' => 'yii\gii\Module',
+    ],
+    'components' => [
+        'request' => [
+            'cookieValidationKey' => 'XXXXXXXXXXXXXX',
+        ],
+        'log' => [
+            'traceLevel' => 3,
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+            ],
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true,
+        ],
+    ],
+];
+
+return $config;
