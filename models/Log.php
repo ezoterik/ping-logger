@@ -30,8 +30,8 @@ class Log extends ActiveRecord
     const EVENT_GOOD = 1;
 
     public static $events = [
-        self::EVENT_ERROR => 'Ошибка',
-        self::EVENT_GOOD => 'Ок',
+        self::EVENT_ERROR => 'Off',
+        self::EVENT_GOOD => 'On',
     ];
 
     public function behaviors()

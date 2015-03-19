@@ -69,10 +69,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     switch ($model->event_num) {
                         case Log::EVENT_GOOD:
-                            $res['class'] = 'danger';
+                            $res['class'] = 'success';
                             break;
                         case Log::EVENT_ERROR:
-                            $res['class'] = 'success';
+                            $res['class'] = 'danger';
                             break;
                     }
 
