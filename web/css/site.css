@@ -93,15 +93,17 @@ a.desc:after {
 .obj.bad span {
   color: black;
 }
-.obj.good,
-.good td {
+.obj.good {
   background-color: green;
   color: white;
 }
-.obj.bad,
-.bad td {
+.obj.bad {
   background-color: red;
   color: black;
+}
+.obj.disable {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
 }
 .logs td,
 .logs th {

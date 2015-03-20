@@ -1,5 +1,6 @@
 <?php
 use app\helpers\Date;
+use app\models\Object;
 use yii\helpers\Html;
 use yii\bootstrap\Collapse;
 
@@ -28,12 +29,21 @@ foreach ($groups as $group) {
             $text .= Html::tag('span', '');
         }
 
+        $stateClass = '';
+        if ($object->group->is_disable || $object->is_disable) {
+            $stateClass = ' disable';
+        } elseif ($object->status == Object::STATUS_ERROR) {
+            $stateClass = ' bad';
+        } else {
+            $stateClass = ' good';
+        }
+
         $content .= Html::a(
             $text,
             ['object/view', 'id' => $object->id],
             [
                 'id' => 'o_' . $object->id,
-                'class' => 'obj' . ($object->status > 0 ? ' good' : ' bad'),
+                'class' => 'obj' . $stateClass,
                 'title' => $object->ip . ':' . $object->port,
                 'data-toggle' => 'tooltip',
             ]
@@ -46,7 +56,9 @@ foreach ($groups as $group) {
 
     $itemOptions = [];
 
-    if ($isAnyError) {
+    if ($group->is_disable) {
+        $itemOptions['class'] = 'panel panel-warning';
+    } elseif ($isAnyError) {
         $itemOptions['class'] = 'panel panel-danger';
     } elseif (count($group->objects) > 0) {
         $itemOptions['class'] = 'panel panel-success';
@@ -78,18 +90,5 @@ if (count($itemsCollapse) > 0) {
         }
         ?>
     </div>
-<?php } ?>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <?php
+}

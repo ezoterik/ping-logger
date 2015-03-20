@@ -42,4 +42,5 @@ return [
     'Status' => 'Статус',
     'Title' => 'Название',
     'Username' => 'Логин',
+    'Is Disable' => 'Отключен',
 ];

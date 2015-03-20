@@ -25,6 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($model, $key, $index, $grid) {
+            $res = [];
+
+            if ($model->is_disable) {
+                $res['class'] = 'warning';
+            }
+
+            return $res;
+        },
         'columns' => [
             [
                 'attribute' => 'id',
@@ -32,6 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['width' => 50]
             ],
             'name',
+            [
+                'attribute' => 'is_disable',
+                'format' => 'boolean',
+                'filter' => [0 => 'Нет', 1 => 'Да'],
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => ['width' => 80],

@@ -28,6 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     'id',
                     'name',
+                    [
+                        'attribute' => 'is_disable',
+                        'format' => 'boolean',
+                    ],
                 ],
             ]) ?>
             <p>

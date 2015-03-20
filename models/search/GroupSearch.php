@@ -16,6 +16,7 @@ class GroupSearch extends Group
     {
         return [
             [['id'], 'integer'],
+            [['is_disable'], 'boolean'],
             [['name'], 'safe'],
         ];
     }
@@ -43,6 +44,7 @@ class GroupSearch extends Group
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'is_disable' => $this->is_disable,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

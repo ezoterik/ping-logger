@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property integer $id
  * @property string $name
+ * @property bool $is_disable
  *
  * @property \app\models\Object[] $objects
  */
@@ -48,6 +49,7 @@ class Group extends ActiveRecord
             [['name'], 'trim'],
             [['name'], 'string', 'max' => 255],
             [['name'], 'unique'],
+            [['is_disable'], 'boolean'],
         ];
     }
 
@@ -59,6 +61,7 @@ class Group extends ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Title'),
+            'is_disable' => Yii::t('app', 'Is Disable'),
         ];
     }
 

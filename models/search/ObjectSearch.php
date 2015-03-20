@@ -17,6 +17,7 @@ class ObjectSearch extends Object
     {
         return [
             [['id', 'port', 'type_id', 'status'], 'integer'],
+            [['is_disable'], 'boolean'],
             [['ip', 'name', 'updated'], 'safe'],
         ];
     }
@@ -53,6 +54,7 @@ class ObjectSearch extends Object
             Object::tableName() . '.port' => $this->port,
             Object::tableName() . '.type_id' => $this->type_id,
             Object::tableName() . '.status' => $this->status,
+            Object::tableName() . '.is_disable' => $this->is_disable,
             Object::tableName() . '.updated' => $this->updated,
         ]);
 

@@ -43,6 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'text',
                         'value' => Object::$statuses[$model->status],
                     ],
+                    [
+                        'attribute' => 'is_disable',
+                        'format' => 'boolean',
+                    ],
                     'updated',
                 ],
             ]) ?>

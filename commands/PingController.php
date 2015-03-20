@@ -33,7 +33,9 @@ class PingController extends Controller
 
         //Вынимаем все группы, чтобы на каждую группу создать по отдельному потоку
         /** @var Group[] $groups */
-        $groups = Group::find()->all();
+        $groups = Group::find()
+            ->where(['is_disable' => false])
+            ->all();
 
         //Запускаем по процессу на каждую группу
         foreach ($groups as $group) {
@@ -80,7 +82,7 @@ class PingController extends Controller
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
         /** @var Object[] $objects */
         $objects = Object::find()
-            ->where(['type_id' => $groupId])
+            ->where(['type_id' => $groupId, 'is_disable' => false])
             ->orderBy('status DESC')->all();
 
         //Перебераем объекты внутри группы
