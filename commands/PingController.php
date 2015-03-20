@@ -15,8 +15,10 @@ class PingController extends Controller
      */
     public function actionIndex()
     {
+        $mutexKey = 'ping_index';
+
         //Защита от параллельного запуска
-        if (!Yii::$app->mutex->acquire('ping_index')) {
+        if (!Yii::$app->mutex->acquire($mutexKey)) {
             return;
         }
 
@@ -73,6 +75,8 @@ class PingController extends Controller
 
             usleep(1000000);
         };
+
+        Yii::$app->mutex->release($mutexKey);
     }
 
     public function actionPingGroup($groupId)
