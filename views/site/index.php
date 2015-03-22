@@ -49,7 +49,7 @@ foreach ($groups as $group) {
             ]
         );
 
-        if ($object->status <= 0) {
+        if ($object->status <= Object::STATUS_ERROR && !$object->is_disable) {
             $isAnyError = true;
         }
     }
