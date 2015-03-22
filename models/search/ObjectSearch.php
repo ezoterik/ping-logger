@@ -16,7 +16,7 @@ class ObjectSearch extends Object
     public function rules()
     {
         return [
-            [['id', 'port', 'type_id', 'status'], 'integer'],
+            [['id', 'port', 'port_udp', 'type_id', 'status'], 'integer'],
             [['is_disable'], 'boolean'],
             [['ip', 'name', 'updated'], 'safe'],
         ];
@@ -52,6 +52,7 @@ class ObjectSearch extends Object
         $query->andFilterWhere([
             Object::tableName() . '.id' => $this->id,
             Object::tableName() . '.port' => $this->port,
+            Object::tableName() . '.port_udp' => $this->port_udp,
             Object::tableName() . '.type_id' => $this->type_id,
             Object::tableName() . '.status' => $this->status,
             Object::tableName() . '.is_disable' => $this->is_disable,

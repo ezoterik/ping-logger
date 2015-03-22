@@ -37,6 +37,8 @@ return [
     'Password' => 'Пароль',
     'Please fill out the following fields to login' => 'Пожалуйста, заполните следующие поля для входа',
     'Port' => 'Порт',
+    'Port TCP' => 'Порт TCP',
+    'Port UDP' => 'Порт UDP',
     'Remember Me' => 'Запомнить меня',
     'Save' => 'Сохранить',
     'Status' => 'Статус',

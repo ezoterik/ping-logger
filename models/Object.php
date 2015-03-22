@@ -13,6 +13,7 @@ use yii\db\Expression;
  * @property string $id
  * @property string $ip
  * @property integer $port
+ * @property integer $port_udp
  * @property string $name
  * @property integer $type_id
  * @property integer $status
@@ -46,7 +47,7 @@ class Object extends ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
-                    //ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'updated'],
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['updated'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updated'],
                 ],
                 'value' => new Expression('NOW()'),
@@ -73,8 +74,9 @@ class Object extends ActiveRecord
     {
         return [
             [['ip', 'port', 'name', 'type_id'], 'required'],
-            [['port', 'type_id'], 'integer'],
+            [['port', 'port_udp', 'type_id'], 'integer'],
             ['port', 'default', 'value' => 80],
+            ['port_udp', 'default', 'value' => 0],
             [['ip', 'name'], 'trim'],
             [['ip'], 'string', 'max' => 15],
             [['name'], 'string', 'max' => 255],
@@ -91,7 +93,8 @@ class Object extends ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'ip' => Yii::t('app', 'IP'),
-            'port' => Yii::t('app', 'Port'),
+            'port' => Yii::t('app', 'Port TCP'),
+            'port_udp' => Yii::t('app', 'Port UDP'),
             'name' => Yii::t('app', 'Title'),
             'type_id' => Yii::t('app', 'Group'),
             'status' => Yii::t('app', 'Status'),

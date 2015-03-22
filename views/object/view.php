@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
                     'ip',
                     'port',
+                    'port_udp',
                     'name',
                     [
                         'attribute' => 'type_id',

@@ -50,6 +50,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['width' => 60]
             ],
             [
+                'attribute' => 'port_udp',
+                'format' => 'text',
+                'headerOptions' => ['width' => 60]
+            ],
+            [
                 'attribute' => 'type_id',
                 'format' => 'text',
                 'value' => function ($data) {
