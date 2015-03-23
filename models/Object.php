@@ -74,11 +74,12 @@ class Object extends ActiveRecord
     {
         return [
             [['ip', 'port', 'name', 'type_id'], 'required'],
+            [['ip', 'name'], 'trim'],
+            ['ip', 'string', 'max' => 15],
+            ['ip', 'match', 'pattern' => '/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/\d*)?$/'],
             [['port', 'port_udp', 'type_id'], 'integer'],
             ['port', 'default', 'value' => 80],
             ['port_udp', 'default', 'value' => 0],
-            [['ip', 'name'], 'trim'],
-            [['ip'], 'string', 'max' => 15],
             [['name'], 'string', 'max' => 255],
             [['is_disable'], 'boolean'],
             [['type_id'], 'exist', 'targetClass' => Group::className(), 'targetAttribute' => 'id'],
