@@ -20,6 +20,9 @@ class PingController extends Controller
             return;
         }
 
+        //shell_exec($cmd . " > /dev/null &");
+        //https://florian.ec/articles/running-background-processes-in-php/
+
         $descriptorspec = [
             0 => ["pipe", "r"],
             1 => ["pipe", "w"],
@@ -80,7 +83,7 @@ class PingController extends Controller
     public function actionPingGroup($groupId)
     {
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
-        /** @var Object[] $objects */
+        /** @var \app\models\Object[] $objects */
         $objects = Object::find()
             ->where(['type_id' => $groupId, 'is_disable' => false])
             ->orderBy('status DESC')->all();
@@ -89,10 +92,34 @@ class PingController extends Controller
         foreach ($objects as $object) {
             //Пингуем каждый объект
             $resStatus = Log::EVENT_ERROR;
-            $fp = @fsockopen($object->ip, $object->port, $errno, $errstr, 10);
-            if ($fp) {
+
+            //TODO: Жесткая валидация IP при сохранении (чтоб нельзя было выполнить в консоли левые команды)
+            //icmp
+            $response = shell_exec('ping -c 1 ' . $object->ip);
+            if (
+                strstr($response, '0 packets received') === false &&
+                preg_match_all('/= \d+\.\d+\/(\d+\.\d+)\/\d+\.\d+\/\d+\.\d+ ms/i', $response, $matches)
+            ) {
+                //$avgRtt = floatval($matches[1]);
                 $resStatus = Log::EVENT_GOOD;
-                fclose($fp);
+            }
+
+            //tcp
+            if ($resStatus == Log::EVENT_ERROR && $object->port > 0) {
+                $response = shell_exec('nping --tcp-connect ' . $object->ip . ' -p ' . $object->port . ' -c 1');
+                if (preg_match_all('/Avg rtt: (\d+\.\d+)ms/i', $response, $matches)) {
+                    //$avgRtt = floatval($matches[1]);
+                    $resStatus = Log::EVENT_GOOD;
+                }
+            }
+
+            //udp
+            if ($resStatus == Log::EVENT_ERROR && $object->port_udp > 0) {
+                $response = shell_exec('nping --udp ' . $object->ip . ' -p ' . $object->port_udp . ' -c 1');
+                if (preg_match_all('/Avg rtt: (\d+\.\d+)ms/i', $response, $matches)) {
+                    //$avgRtt = floatval($matches[1]); //14.778
+                    $resStatus = Log::EVENT_GOOD;
+                }
             }
 
             //Если статус изменился, создаем лог
