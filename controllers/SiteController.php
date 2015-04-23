@@ -4,12 +4,15 @@ namespace app\controllers;
 
 use app\models\Log;
 use app\models\Group;
+use app\models\Object;
 use Yii;
 use yii\filters\AccessControl;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 use app\models\LoginForm;
+use yii\web\Response;
 
 class SiteController extends Controller
 {
@@ -26,7 +29,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'logout'],
+                        'actions' => ['index', 'get-monitor-data', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -36,6 +39,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'get-monitor-data' => ['get'],
                 ],
             ],
         ];
@@ -52,8 +56,21 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        //TODO: более оптимально вынуть все объекты, а уже потом группы к ним
-        $groups = Group::find()->with('objects')->orderBy('name')->all();
+        return $this->render('index');
+    }
+
+    public function actionGetMonitorData()
+    {
+        if (!Yii::$app->request->isAjax) {
+            throw new BadRequestHttpException();
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        //TODO: можно пробовать использовать механизм связей
+        $objects = Object::find()
+            ->asArray()
+            ->all();
 
         $lastErrorEventsDates = (new Query())
             ->select('object_id, MAX(created) AS last_error_event')
@@ -63,10 +80,33 @@ class SiteController extends Controller
             ->indexBy('object_id')
             ->all();
 
-        return $this->render('index', [
-            'groups' => $groups,
-            'lastErrorEventsDates' => $lastErrorEventsDates,
-        ]);
+        foreach ($objects as &$object) {
+            if (isset($lastErrorEventsDates[$object['id']])) {
+                //TODO: timeago
+                $object['lastErrorEventDate'] = $lastErrorEventsDates[$object['id']]['last_error_event'];
+            }
+
+            //Генерация случайного статуса для тестирования
+            //$object['status'] = array_rand(Object::$statuses);
+        }
+        unset($object, $lastErrorEventsDates);
+
+        $groups = Group::find()
+            ->orderBy('name')
+            ->indexBy('id')
+            ->asArray()
+            ->all();
+
+        //Распределяем объекты по группам
+        foreach ($objects as $object) {
+            $groups[$object['type_id']]['objects'][] = $object;
+        }
+        unset($objects);
+
+        //Сбрасываем индексы на обычные
+        $groups = array_values($groups);
+
+        return ['groups' => $groups];
     }
 
     public function actionLogin()
