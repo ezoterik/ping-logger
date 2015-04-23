@@ -69,7 +69,6 @@ a.desc:after {
 .obj {
   width: 80px;
   height: 80px;
-  float: left;
   overflow: hidden;
   background-color: gray;
   border: 1px solid white;
@@ -78,32 +77,51 @@ a.desc:after {
   text-decoration: none;
   font-family: Arial, sans-serif;
   font-size: 10px;
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
 }
-.obj:hover {
-  border-color: black;
-}
-.obj i {
+.obj .name,
+.obj .ip,
+.obj .last-update,
+.obj .error-date {
   display: block;
+}
+.obj .last-update {
   border-bottom: 1px dashed white;
   margin: 2px 0;
 }
-.obj.good span {
-  color: red;
-}
-.obj.bad span {
-  color: black;
+.obj:hover {
+  border-color: black;
 }
 .obj.good {
   background-color: green;
   color: white;
 }
+.obj.good .error-date {
+  color: red;
+}
 .obj.bad {
   background-color: red;
+  color: black;
+}
+.obj.bad .error-date {
   color: black;
 }
 .obj.disable {
   background-color: #fcf8e3;
   color: #8a6d3b;
+}
+.monitor-box .panel-heading .counter .label {
+  margin-left: 5px;
+  font-size: 60%;
+}
+.monitor-box .panel-heading a {
+  text-decoration: none;
+}
+.monitor-box .panel-heading a:hover .title {
+  text-decoration: underline;
 }
 .logs td,
 .logs th {

@@ -1,3 +1,6 @@
+@import "lesshat";
+@import "mixins";
+
 html,
 body {
     height: 100%;
@@ -87,7 +90,6 @@ a.desc:after {
 .obj {
     width: 80px;
     height: 80px;
-    float: left;
     overflow: hidden;
     background-color: gray;
     border: 1px solid white;
@@ -96,40 +98,66 @@ a.desc:after {
     text-decoration: none;
     font-family: Arial, sans-serif;
     font-size: 10px;
+    .inline-block();
+
+    .name,
+    .ip,
+    .last-update,
+    .error-date {
+        display: block;
+    }
+
+    .last-update {
+        border-bottom: 1px dashed white;
+        margin: 2px 0;
+    }
 
     &:hover {
         border-color: black;
     }
 
-    i {
-        display: block;
-        border-bottom: 1px dashed white;
-        margin: 2px 0;
-    }
-
-    &.good span {
-        color: red;
-    }
-
-    &.bad span {
-        color: black;
-    }
-}
-
-.obj {
     &.good {
         background-color: green;
         color: white;
+
+        .error-date {
+            color: red;
+        }
     }
 
     &.bad {
         background-color: red;
         color: black;
+
+        .error-date {
+            color: black;
+        }
     }
 
     &.disable {
         background-color: #fcf8e3;
         color: #8a6d3b;
+    }
+}
+
+.monitor-box {
+    .panel-heading {
+        .counter {
+            .label {
+                margin-left: 5px;
+                font-size: 60%;
+            }
+        }
+
+        a {
+            text-decoration: none;
+
+            &:hover {
+                .title {
+                    text-decoration: underline;
+                }
+            }
+        }
     }
 }
 
