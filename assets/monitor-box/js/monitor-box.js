@@ -128,6 +128,7 @@ var MonitorGroup = React.createClass({
                     columnId={this.props.columnId}
                     title={this.props.group.name}
                     counts={counts}
+                    lockDate={this.props.group.lock_date}
                 />
                 <div id={groupId} className="panel-collapse collapse">
                     <div className="panel-body">
@@ -160,12 +161,25 @@ var MonitorGroupHeader = React.createClass({
 
         var counter = d.span({className: 'counter'}, counterStatuses);
 
+        var pingStatus = [];
+        if (this.props.lockDate !== '0000-00-00 00:00:00') {
+            pingStatus = d.span(
+                {
+                    className: 'ping-status pull-right',
+                    'title': 'Start ping: ' + moment(this.props.lockDate).startOf('second').fromNow(),
+                    'data-toggle': 'tooltip'
+                },
+                d.i({className: 'fa fa-refresh fa-spin'}, '')
+            );
+        }
+
         return (
             <div className="panel-heading">
                 <h4 className="panel-title">
                     <a className="collapse-toggle" href={'#' + this.props.groupId} data-toggle="collapse" data-parent={'#' + this.props.columnId}>
                         <span className="title">{this.props.title}</span>{counter}
                     </a>
+                    {pingStatus}
                 </h4>
             </div>
         );
@@ -210,7 +224,7 @@ var MonitorObject = React.createClass({
         var classes = React.addons.classSet(classSetOptions);
 
         return (
-            <a href={url} id={'o_' + this.props.object.id} className={classes} title={title}>
+            <a href={url} id={'o_' + this.props.object.id} className={classes} title={title} data-toggle="tooltip">
                 {content}
             </a>
         );
@@ -218,6 +232,6 @@ var MonitorObject = React.createClass({
 });
 
 React.render(
-    <MonitorBox url="/site/get-monitor-data" pollInterval={6000} />,
+    <MonitorBox url="/site/get-monitor-data" pollInterval={5000} />,
     document.getElementById('monitor-box')
 );

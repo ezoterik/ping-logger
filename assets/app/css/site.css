@@ -118,6 +118,13 @@ a.desc:after {
   margin-left: 5px;
   font-size: 60%;
 }
+.monitor-box .panel-heading .ping-status {
+  zoom: 1;
+  filter: alpha(opacity=30);
+  -webkit-opacity: 0.3;
+  -moz-opacity: 0.3;
+  opacity: 0.3;
+}
 .monitor-box .panel-heading a {
   text-decoration: none;
 }

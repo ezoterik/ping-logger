@@ -7,6 +7,7 @@ use app\models\Log;
 use app\models\Object;
 use Yii;
 use yii\console\Controller;
+use yii\db\Expression;
 use yii\log\Logger;
 
 class PingController extends Controller
@@ -16,10 +17,23 @@ class PingController extends Controller
      */
     public function actionIndex()
     {
-        //Защита от параллельного запуска
-        if (!Yii::$app->mutex->acquire('ping_index')) {
+        //Вынимаем все группы, чтобы на каждую группу создать по отдельному потоку
+        /** @var Group[] $groups */
+        $groups = Group::find()
+            ->select(['id'])
+            ->where([
+                'is_disable' => false,
+                'lock_date' => '0000-00-00 00:00:00',
+            ])
+            ->indexBy('id')
+            ->all();
+
+        if (count($groups) == 0) {
             return;
         }
+
+        //Ставим отметку о блокировке для всех найденных записей
+        Group::lock(array_keys($groups));
 
         //shell_exec($cmd . " > /dev/null &");
         //https://florian.ec/articles/running-background-processes-in-php/
@@ -34,12 +48,6 @@ class PingController extends Controller
         $pipes = [];
 
         $procLastOutput = [];
-
-        //Вынимаем все группы, чтобы на каждую группу создать по отдельному потоку
-        /** @var Group[] $groups */
-        $groups = Group::find()
-            ->where(['is_disable' => false])
-            ->all();
 
         //Запускаем по процессу на каждую группу
         foreach ($groups as $group) {
@@ -63,6 +71,7 @@ class PingController extends Controller
                         fclose($pipes[$processKey][0]);
                         fclose($pipes[$processKey][1]);
                         proc_close($processRes);
+                        Group::unLock($processKey);
                         unset($process[$processKey]);
                         break;
                     } else {
@@ -72,6 +81,7 @@ class PingController extends Controller
                         //}
                     }
                 } else {
+                    Group::unLock($processKey);
                     unset($process[$processKey]);
                     break;
                 }
@@ -86,6 +96,7 @@ class PingController extends Controller
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
         /** @var \app\models\Object[] $objects */
         $objects = Object::find()
+            ->select(['ip', 'port', 'port_udp', 'status', 'avg_rtt', 'updated'])
             ->where(['group_id' => $groupId, 'is_disable' => false])
             ->orderBy('status DESC')->all();
 
