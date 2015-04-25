@@ -74,7 +74,7 @@ class SiteController extends Controller
 
         $lastErrorEventsDates = (new Query())
             ->select('object_id, MAX(created) AS last_error_event')
-            ->from('logs')
+            ->from(Log::tableName())
             ->where(['event_num' => Log::EVENT_ERROR])
             ->groupBy('object_id')
             ->indexBy('object_id')
@@ -98,7 +98,7 @@ class SiteController extends Controller
 
         //Распределяем объекты по группам
         foreach ($objects as $object) {
-            $groups[$object['type_id']]['objects'][] = $object;
+            $groups[$object['group_id']]['objects'][] = $object;
         }
         unset($objects);
 

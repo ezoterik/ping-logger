@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['width' => 60]
             ],
             [
-                'attribute' => 'type_id',
+                'attribute' => 'group_id',
                 'format' => 'text',
                 'value' => function ($data) {
                     return $data->group['name'];

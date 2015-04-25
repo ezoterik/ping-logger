@@ -8,14 +8,14 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "objects".
+ * This is the model class for table "{{%object}}".
  *
  * @property string $id
  * @property string $ip
  * @property integer $port
  * @property integer $port_udp
  * @property string $name
- * @property integer $type_id
+ * @property integer $group_id
  * @property integer $status
  * @property float $avg_rtt
  * @property bool $is_disable
@@ -31,7 +31,7 @@ class Object extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'objects';
+        return '{{%object}}';
     }
 
     const STATUS_ERROR = 0;
@@ -74,16 +74,16 @@ class Object extends ActiveRecord
     public function rules()
     {
         return [
-            [['ip', 'port', 'name', 'type_id'], 'required'],
+            [['ip', 'port', 'name', 'group_id'], 'required'],
             [['ip', 'name'], 'trim'],
             ['ip', 'string', 'max' => 15],
             ['ip', 'match', 'pattern' => '/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/\d*)?$/'],
-            [['port', 'port_udp', 'type_id'], 'integer'],
+            [['port', 'port_udp', 'group_id'], 'integer'],
             ['port', 'default', 'value' => 80],
             ['port_udp', 'default', 'value' => 0],
             [['name'], 'string', 'max' => 255],
             [['is_disable'], 'boolean'],
-            [['type_id'], 'exist', 'targetClass' => Group::className(), 'targetAttribute' => 'id'],
+            [['group_id'], 'exist', 'targetClass' => Group::className(), 'targetAttribute' => 'id'],
         ];
     }
 
@@ -98,7 +98,7 @@ class Object extends ActiveRecord
             'port' => Yii::t('app', 'Port TCP'),
             'port_udp' => Yii::t('app', 'Port UDP'),
             'name' => Yii::t('app', 'Title'),
-            'type_id' => Yii::t('app', 'Group'),
+            'group_id' => Yii::t('app', 'Group'),
             'status' => Yii::t('app', 'Status'),
             'avg_rtt' => Yii::t('app', 'Average RTT'),
             'is_disable' => Yii::t('app', 'Is Disable'),
@@ -111,7 +111,7 @@ class Object extends ActiveRecord
      */
     public function getGroup()
     {
-        return $this->hasOne(Group::className(), ['id' => 'type_id']);
+        return $this->hasOne(Group::className(), ['id' => 'group_id']);
     }
 
     /**

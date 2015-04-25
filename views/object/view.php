@@ -35,9 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'port_udp',
                     'name',
                     [
-                        'attribute' => 'type_id',
+                        'attribute' => 'group_id',
                         'format' => 'text',
-                        'value' => ($model->type_id ? $model->group->name : ''),
+                        'value' => ($model->group_id ? $model->group->name : ''),
                     ],
                     [
                         'attribute' => 'status',

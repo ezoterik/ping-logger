@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "types".
+ * This is the model class for table "{{%group}}".
  *
  * @property integer $id
  * @property string $name
@@ -22,7 +22,7 @@ class Group extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'types';
+        return '{{%group}}';
     }
 
     public function beforeDelete()
@@ -67,7 +67,7 @@ class Group extends ActiveRecord
 
     public function getObjects()
     {
-        return $this->hasMany(Object::className(), ['type_id' => 'id']);
+        return $this->hasMany(Object::className(), ['group_id' => 'id']);
     }
 
     public static function getAllList()

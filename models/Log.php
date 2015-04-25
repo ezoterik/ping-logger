@@ -8,7 +8,7 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "logs".
+ * This is the model class for table "{{%log}}".
  *
  * @property string $object_id
  * @property integer $event_num
@@ -23,7 +23,7 @@ class Log extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'logs';
+        return '{{%log}}';
     }
 
     const EVENT_ERROR = 0;

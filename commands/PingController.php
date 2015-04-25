@@ -86,7 +86,7 @@ class PingController extends Controller
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
         /** @var \app\models\Object[] $objects */
         $objects = Object::find()
-            ->where(['type_id' => $groupId, 'is_disable' => false])
+            ->where(['group_id' => $groupId, 'is_disable' => false])
             ->orderBy('status DESC')->all();
 
         //Перебераем объекты внутри группы

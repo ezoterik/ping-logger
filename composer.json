@@ -1,7 +1,13 @@
 {
 	"name": "Ping Logger",
 	"description": "Ping Logger Application",
-	"keywords": ["ping", "admin", "utilities", "lan", "network"],
+	"keywords": [
+		"ping",
+		"admin",
+		"utilities",
+		"lan",
+		"network"
+	],
 	"homepage": "https://bitbucket.org/ezoterik/ping_logger",
 	"type": "project",
 	"license": "BSD-3-Clause",
@@ -9,14 +15,14 @@
 		"source": "https://bitbucket.org/ezoterik/ping_logger"
 	},
 	"minimum-stability": "stable",
-    "require": {
-        "php": ">=5.4.0",
-        "yiisoft/yii2": "2.0.*@dev",
-        "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*",
-        "kartik-v/yii2-icons": "dev-master",
-        "omnilight/yii2-momentjs": "dev-master"
-    },
+	"require": {
+		"php": ">=5.4.0",
+		"yiisoft/yii2": "2.0.*@dev",
+		"yiisoft/yii2-bootstrap": "*",
+		"yiisoft/yii2-swiftmailer": "*",
+		"kartik-v/yii2-icons": "dev-master",
+		"omnilight/yii2-momentjs": "dev-master"
+	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",
 		"yiisoft/yii2-debug": "*",
@@ -44,9 +50,9 @@
 		"executable": [
 			"yii"
 		],
-        "asset-installer-paths": {
-            "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
-        }
+		"asset-installer-paths": {
+			"npm-asset-library": "vendor/npm",
+			"bower-asset-library": "vendor/bower"
+		}
 	}
 }

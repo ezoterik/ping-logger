@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
         <div class="col-sm-4"><?= $form->field($model, 'port_udp')->input('number', ['min' => 0, 'max' => 65535]) ?></div>
     </div>
 
-    <?= $form->field($model, 'type_id')->dropDownList(Group::getAllList()) ?>
+    <?= $form->field($model, 'group_id')->dropDownList(Group::getAllList()) ?>
 
     <?= $form->field($model, 'is_disable')->checkbox() ?>
 

@@ -16,7 +16,7 @@ class ObjectSearch extends Object
     public function rules()
     {
         return [
-            [['id', 'port', 'port_udp', 'type_id', 'status'], 'integer'],
+            [['id', 'port', 'port_udp', 'group_id', 'status'], 'integer'],
             [['is_disable'], 'boolean'],
             [['ip', 'name', 'updated'], 'safe'],
         ];
@@ -40,7 +40,7 @@ class ObjectSearch extends Object
         ]);
 
         $query->joinWith(['group' => function($query) { $query->from(['group' => Group::tableName()]); }]);
-        $dataProvider->sort->attributes['type_id'] = [
+        $dataProvider->sort->attributes['group_id'] = [
             'asc' => ['group.name' => SORT_ASC],
             'desc' => ['group.name' => SORT_DESC],
         ];
@@ -53,7 +53,7 @@ class ObjectSearch extends Object
             Object::tableName() . '.id' => $this->id,
             Object::tableName() . '.port' => $this->port,
             Object::tableName() . '.port_udp' => $this->port_udp,
-            Object::tableName() . '.type_id' => $this->type_id,
+            Object::tableName() . '.group_id' => $this->group_id,
             Object::tableName() . '.status' => $this->status,
             Object::tableName() . '.is_disable' => $this->is_disable,
             Object::tableName() . '.updated' => $this->updated,
