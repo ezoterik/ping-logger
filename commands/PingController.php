@@ -96,9 +96,10 @@ class PingController extends Controller
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
         /** @var \app\models\Object[] $objects */
         $objects = Object::find()
-            ->select(['ip', 'port', 'port_udp', 'status', 'avg_rtt', 'updated'])
             ->where(['group_id' => $groupId, 'is_disable' => false])
-            ->orderBy('status DESC')->all();
+            ->orderBy('status DESC')
+            ->all();
+        //->select(['id', 'ip', 'port', 'port_udp', 'status', 'avg_rtt', 'updated']) Не сохраняет запись если так выбирать
 
         //Перебераем объекты внутри группы
         foreach ($objects as $object) {
