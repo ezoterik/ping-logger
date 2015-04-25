@@ -104,4 +104,12 @@ class Group extends ActiveRecord
     {
         self::updateAll(['lock_date' => '0000-00-00 00:00:00'], ['id' => $groupId]);
     }
+
+    /**
+     * Уберает у групп блокировку, если блокировка висит слишком долго (зависла)
+     */
+    public static function unLockOld()
+    {
+        self::updateAll(['lock_date' => '0000-00-00 00:00:00'], 'lock_date != "0000-00-00 00:00:00" AND lock_date < (NOW() - interval 15 minute)');
+    }
 }

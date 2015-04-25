@@ -17,6 +17,9 @@ class PingController extends Controller
      */
     public function actionIndex()
     {
+        //Удаляем зависшие группы
+        Group::unLockOld();
+
         //Вынимаем все группы, чтобы на каждую группу создать по отдельному потоку
         /** @var Group[] $groups */
         $groups = Group::find()
