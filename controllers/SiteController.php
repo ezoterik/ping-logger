@@ -82,7 +82,6 @@ class SiteController extends Controller
 
         foreach ($objects as &$object) {
             if (isset($lastErrorEventsDates[$object['id']])) {
-                //TODO: timeago
                 $object['lastErrorEventDate'] = $lastErrorEventsDates[$object['id']]['last_error_event'];
             }
 

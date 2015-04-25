@@ -7,6 +7,7 @@ use app\models\Log;
 use app\models\Object;
 use Yii;
 use yii\console\Controller;
+use yii\log\Logger;
 
 class PingController extends Controller
 {
@@ -92,48 +93,123 @@ class PingController extends Controller
         foreach ($objects as $object) {
             //Пингуем каждый объект
             $resStatus = Log::EVENT_ERROR;
-
-            //TODO: Жесткая валидация IP при сохранении (чтоб нельзя было выполнить в консоли левые команды)
-            //icmp
-            $response = shell_exec('ping -c 1 ' . $object->ip);
-            if (
-                strstr($response, '0 packets received') === false &&
-                preg_match_all('/= \d+\.\d+\/(\d+\.\d+)\/\d+\.\d+\/\d+\.\d+ ms/i', $response, $matches)
-            ) {
-                //$avgRtt = floatval($matches[1]);
-                $resStatus = Log::EVENT_GOOD;
-            }
+            $avgRtt = 0;
 
             //tcp
             if ($resStatus == Log::EVENT_ERROR && $object->port > 0) {
-                $response = shell_exec('nping --tcp-connect ' . $object->ip . ' -p ' . $object->port . ' -c 1');
-                if (preg_match_all('/Avg rtt: (\d+\.\d+)ms/i', $response, $matches)) {
-                    //$avgRtt = floatval($matches[1]);
+                if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
                     $resStatus = Log::EVENT_GOOD;
+                    //Посылаем 100 пакетов, чтоб узнать среднее время отклика
+                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, false, 100, 0.01);
+                    if ($avgRttTmp > 0) {
+                        $avgRtt = $avgRttTmp;
+                    }
                 }
             }
 
             //udp
             if ($resStatus == Log::EVENT_ERROR && $object->port_udp > 0) {
-                $response = shell_exec('nping --udp ' . $object->ip . ' -p ' . $object->port_udp . ' -c 1');
-                if (preg_match_all('/Avg rtt: (\d+\.\d+)ms/i', $response, $matches)) {
-                    //$avgRtt = floatval($matches[1]); //14.778
+                if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
                     $resStatus = Log::EVENT_GOOD;
+                    //Посылаем 100 пакетов, чтоб узнать среднее время отклика
+                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, true, 100, 0.01);
+                    if ($avgRttTmp > 0) {
+                        $avgRtt = $avgRttTmp;
+                    }
                 }
             }
 
-            //Если статус изменился, создаем лог
-            if ($object->status != $resStatus) {
-                $log = new Log();
-                $log->object_id = $object->id;
-                $log->event_num = $resStatus;
-                $log->save();
+            //icmp
+            if ($resStatus == Log::EVENT_ERROR) {
+                if ($this->pingByPing($object->ip) !== false) {
+                    $resStatus = Log::EVENT_GOOD;
+                    //Посылаем 100 пакетов, чтоб узнать среднее время отклика
+                    $avgRttTmp = $this->pingByPing($object->ip, 100, 0.1);
+                    if ($avgRttTmp > 0) {
+                        $avgRtt = $avgRttTmp;
+                    }
+                }
+            }
 
-                $object->status = $resStatus;
+            if ($object->status != $resStatus || $object->avg_rtt != $avgRtt) {
+                //Обновляем время пинга
+                $object->avg_rtt = $avgRtt;
+
+                //Если статус изменился, создаем лог
+                if ($object->status != $resStatus) {
+                    $log = new Log();
+                    $log->object_id = $object->id;
+                    $log->event_num = $resStatus;
+                    $log->save();
+
+                    $object->status = $resStatus;
+                }
+
                 $object->save();
             } else {
                 $object->touch('updated');
             }
         }
+    }
+
+    /**
+     * @param string $ip
+     * @param int $count
+     * @param float $delay
+     * @return bool|float
+     */
+    protected function pingByPing($ip, $count = 1, $delay = 0.0)
+    {
+        if ($ip == '') {
+            return false;
+        }
+
+        $cmd = 'ping';
+        if ($count > 0) {
+            $cmd .= ' -c ' . $count;
+        }
+        if ($delay >= 0.1) {
+            $cmd .= ' -i ' . $delay;
+        }
+        $cmd .= ' ' . $ip;
+
+        $response = shell_exec($cmd);
+        if (
+            strstr($response, '0 packets received') === false &&
+            preg_match('/= \d+\.\d+\/(\d+\.\d+)\/\d+\.\d+\/\d+\.\d+ ms/i', $response, $matches)
+        ) {
+            return floatval($matches[1]);
+        }
+
+        return false;
+    }
+
+    protected function pingByNPing($ip, $port, $isUdp = false, $count = 1, $delay = 0.0)
+    {
+        if ($ip == '' || $port <= 0) {
+            return false;
+        }
+
+        $cmd = 'nping';
+        if ($isUdp) {
+            $cmd .= ' --udp';
+        } else {
+            $cmd .= ' --tcp-connect';
+        }
+        $cmd .= ' ' . $ip;
+        $cmd .= ' -p ' . $port;
+        if ($count > 0) {
+            $cmd .= ' -c ' . $count;
+        }
+        if ($delay > 0) {
+            $cmd .= ' --delay ' . $delay;
+        }
+
+        $response = shell_exec($cmd);
+        if (preg_match('/Avg rtt: (\d+\.\d+)ms/i', $response, $matches)) {
+            return floatval($matches[1]);
+        }
+
+        return false;
     }
 }

@@ -45,6 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => Object::$statuses[$model->status],
                     ],
                     [
+                        'attribute' => 'avg_rtt',
+                        'format' => 'text',
+                        'value' => $model->avg_rtt . ' ms',
+                    ],
+                    [
                         'attribute' => 'is_disable',
                         'format' => 'boolean',
                     ],

@@ -68,7 +68,7 @@ a.desc:after {
 }
 .obj {
   width: 80px;
-  height: 80px;
+  height: 90px;
   overflow: hidden;
   background-color: gray;
   border: 1px solid white;
@@ -85,10 +85,11 @@ a.desc:after {
 .obj .name,
 .obj .ip,
 .obj .last-update,
-.obj .error-date {
+.obj .error-date,
+.obj .rtt {
   display: block;
 }
-.obj .last-update {
+.obj .rtt {
   border-bottom: 1px dashed white;
   margin: 2px 0;
 }
@@ -100,7 +101,7 @@ a.desc:after {
   color: white;
 }
 .obj.good .error-date {
-  color: red;
+  color: #ffff00;
 }
 .obj.bad {
   background-color: red;

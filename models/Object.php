@@ -17,6 +17,7 @@ use yii\db\Expression;
  * @property string $name
  * @property integer $type_id
  * @property integer $status
+ * @property float $avg_rtt
  * @property bool $is_disable
  * @property string $updated
  *
@@ -99,6 +100,7 @@ class Object extends ActiveRecord
             'name' => Yii::t('app', 'Title'),
             'type_id' => Yii::t('app', 'Group'),
             'status' => Yii::t('app', 'Status'),
+            'avg_rtt' => Yii::t('app', 'Average RTT'),
             'is_disable' => Yii::t('app', 'Is Disable'),
             'updated' => Yii::t('app', 'Date of activity'),
         ];

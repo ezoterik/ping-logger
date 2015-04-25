@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b1a46404b479ebe4a232df886b950cec",
+    "hash": "f16553e35cb86d98fa449843126eaa7e",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -177,6 +177,40 @@
                 "mask",
                 "plugins"
             ]
+        },
+        {
+            "name": "bower-asset/moment",
+            "version": "2.10.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moment/moment.git",
+                "reference": "ce233cecf3d07aa15869a1db0fd8a8c43efccfcd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moment/moment/zipball/ce233cecf3d07aa15869a1db0fd8a8c43efccfcd",
+                "reference": "ce233cecf3d07aa15869a1db0fd8a8c43efccfcd",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "moment.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests",
+                    "tasks",
+                    "component.json",
+                    "composer.json",
+                    "CONTRIBUTING.md",
+                    "ender.js",
+                    "Gruntfile.js",
+                    "package.js",
+                    "package.json"
+                ]
+            }
         },
         {
             "name": "bower-asset/punycode",
@@ -525,6 +559,46 @@
             "time": "2015-02-13 03:36:35"
         },
         {
+            "name": "omnilight/yii2-momentjs",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/omnilight/yii2-momentjs.git",
+                "reference": "b4c4b232f76e342235ec8015be68e791b7421029"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/omnilight/yii2-momentjs/zipball/b4c4b232f76e342235ec8015be68e791b7421029",
+                "reference": "b4c4b232f76e342235ec8015be68e791b7421029",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/moment": "*",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "omnilight\\assets\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pavel Agalecky",
+                    "email": "pavel.agalecky@gmail.com"
+                }
+            ],
+            "description": "Moment.js asset for Yii2 framework",
+            "keywords": [
+                "moment",
+                "momentjs",
+                "yii2"
+            ],
+            "time": "2015-02-23 11:33:26"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.0",
             "source": {
@@ -582,12 +656,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "718581fb165a96f29e87fa42a855fc9a20c11b0b"
+                "reference": "3f455529c34da4b54aa47db076c1884c10791878"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/718581fb165a96f29e87fa42a855fc9a20c11b0b",
-                "reference": "718581fb165a96f29e87fa42a855fc9a20c11b0b",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/3f455529c34da4b54aa47db076c1884c10791878",
+                "reference": "3f455529c34da4b54aa47db076c1884c10791878",
                 "shasum": ""
             },
             "require": {
@@ -662,7 +736,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-04-21 14:58:03"
+            "time": "2015-04-24 16:22:26"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1157,7 +1231,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "yiisoft/yii2": 20,
-        "kartik-v/yii2-icons": 20
+        "kartik-v/yii2-icons": 20,
+        "omnilight/yii2-momentjs": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

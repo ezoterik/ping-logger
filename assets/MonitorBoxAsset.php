@@ -19,6 +19,7 @@ class MonitorBoxAsset extends AssetBundle
     ];
 
     public $depends = [
+        'omnilight\assets\MomentAsset',
         'app\assets\ReactAsset',
     ];
 }

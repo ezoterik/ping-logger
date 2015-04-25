@@ -182,11 +182,17 @@ var MonitorObject = React.createClass({
         var content = [
             d.b({className: 'name'}, this.props.object.name),
             d.span({className: 'ip'}, this.props.object.ip),
-            d.i({className: 'last-update'}, this.props.object.updated)
+            d.i({className: 'last-update'}, moment(this.props.object.updated).startOf('second').fromNow()),
+            d.span({className: 'rtt'}, this.props.object.avg_rtt + ' ms')
         ];
 
         if (typeof this.props.object.lastErrorEventDate !== 'undefined') {
-            content.push(d.span({className: 'error-date'}, this.props.object.lastErrorEventDate));
+            content.push(
+                d.span(
+                    {className: 'error-date'},
+                    moment(this.props.object.lastErrorEventDate).startOf('second').fromNow()
+                )
+            );
         }
 
         var classSetOptions = {
