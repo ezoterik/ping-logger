@@ -191,7 +191,10 @@ var MonitorObject = React.createClass({
         var d = React.DOM;
 
         var url = '/object/' + this.props.object.id;
-        var title = this.props.object.ip + ':' + this.props.object.port;
+        var title = this.props.object.ip;
+        if (this.props.object.port > 0) {
+            title += ':' + this.props.object.port;
+        }
 
         var content = [
             d.b({className: 'name'}, this.props.object.name),

@@ -74,12 +74,12 @@ class Object extends ActiveRecord
     public function rules()
     {
         return [
-            [['ip', 'port', 'name', 'group_id'], 'required'],
+            [['ip', 'name', 'group_id'], 'required'],
             [['ip', 'name'], 'trim'],
             ['ip', 'string', 'max' => 15],
             ['ip', 'match', 'pattern' => '/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/\d*)?$/'],
-            [['port', 'port_udp', 'group_id'], 'integer'],
-            ['port', 'default', 'value' => 80],
+            [['port', 'port_udp', 'group_id'], 'integer', 'min' => 0],
+            ['port', 'default', 'value' => 0],
             ['port_udp', 'default', 'value' => 0],
             [['name'], 'string', 'max' => 255],
             [['is_disable'], 'boolean'],
