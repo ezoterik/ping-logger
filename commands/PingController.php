@@ -135,7 +135,7 @@ class PingController extends Controller
             }
 
             //icmp
-            if ($resStatus == Log::EVENT_ERROR) {
+            if ($resStatus == Log::EVENT_ERROR && $object->port == 0 && $object->port_udp == 0) {
                 if ($this->pingByPing($object->ip) !== false) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем 100 пакетов, чтоб узнать среднее время отклика
