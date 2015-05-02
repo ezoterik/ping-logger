@@ -12,7 +12,9 @@ use yii\log\Logger;
 
 class PingController extends Controller
 {
-    const COUNT_AVG_RTT_PACKAGES = 50;
+    const AVG_RTT_COUNT_PACKAGES = 50;
+    const AVG_RTT_DELAY_TCP_AND_UDP = 0.1;
+    const AVG_RTT_DELAY_ICMP = 0.1;
 
     /**
      * Пингует все объекты
@@ -117,7 +119,7 @@ class PingController extends Controller
                 if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
-                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, false, self::COUNT_AVG_RTT_PACKAGES, 0.01);
+                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, false, self::AVG_RTT_COUNT_PACKAGES, self::AVG_RTT_DELAY_TCP_AND_UDP);
                     if ($avgRttTmp > 0) {
                         $avgRtt = $avgRttTmp;
                     }
@@ -129,7 +131,7 @@ class PingController extends Controller
                 if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
-                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, true, self::COUNT_AVG_RTT_PACKAGES, 0.01);
+                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, true, self::AVG_RTT_COUNT_PACKAGES, self::AVG_RTT_DELAY_TCP_AND_UDP);
                     if ($avgRttTmp > 0) {
                         $avgRtt = $avgRttTmp;
                     }
@@ -141,7 +143,7 @@ class PingController extends Controller
                 if ($this->pingByPing($object->ip) !== false) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
-                    $avgRttTmp = $this->pingByPing($object->ip, self::COUNT_AVG_RTT_PACKAGES, 0.1);
+                    $avgRttTmp = $this->pingByPing($object->ip, self::AVG_RTT_COUNT_PACKAGES, self::AVG_RTT_DELAY_ICMP);
                     if ($avgRttTmp > 0) {
                         $avgRtt = $avgRttTmp;
                     }
