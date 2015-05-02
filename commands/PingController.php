@@ -12,6 +12,8 @@ use yii\log\Logger;
 
 class PingController extends Controller
 {
+    const COUNT_AVG_RTT_PACKAGES = 50;
+
     /**
      * Пингует все объекты
      */
@@ -114,8 +116,8 @@ class PingController extends Controller
             if ($resStatus == Log::EVENT_ERROR && $object->port > 0) {
                 if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
                     $resStatus = Log::EVENT_GOOD;
-                    //Посылаем 100 пакетов, чтоб узнать среднее время отклика
-                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, false, 100, 0.01);
+                    //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
+                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, false, self::COUNT_AVG_RTT_PACKAGES, 0.01);
                     if ($avgRttTmp > 0) {
                         $avgRtt = $avgRttTmp;
                     }
@@ -126,8 +128,8 @@ class PingController extends Controller
             if ($resStatus == Log::EVENT_ERROR && $object->port_udp > 0) {
                 if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
                     $resStatus = Log::EVENT_GOOD;
-                    //Посылаем 100 пакетов, чтоб узнать среднее время отклика
-                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, true, 100, 0.01);
+                    //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
+                    $avgRttTmp = $this->pingByNPing($object->ip, $object->port, true, self::COUNT_AVG_RTT_PACKAGES, 0.01);
                     if ($avgRttTmp > 0) {
                         $avgRtt = $avgRttTmp;
                     }
@@ -138,8 +140,8 @@ class PingController extends Controller
             if ($resStatus == Log::EVENT_ERROR && $object->port == 0 && $object->port_udp == 0) {
                 if ($this->pingByPing($object->ip) !== false) {
                     $resStatus = Log::EVENT_GOOD;
-                    //Посылаем 100 пакетов, чтоб узнать среднее время отклика
-                    $avgRttTmp = $this->pingByPing($object->ip, 100, 0.1);
+                    //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
+                    $avgRttTmp = $this->pingByPing($object->ip, self::COUNT_AVG_RTT_PACKAGES, 0.1);
                     if ($avgRttTmp > 0) {
                         $avgRtt = $avgRttTmp;
                     }
