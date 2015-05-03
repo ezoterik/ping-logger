@@ -21,16 +21,51 @@ var MonitorBox = React.createClass({
         this.loadDataFromServer();
         setInterval(this.loadDataFromServer, this.props.pollInterval);
     },
+    handleChangeWideMode: function (newIsWideMode) {
+        this.setProps({isWideMode: newIsWideMode});
+    },
     render: function () {
+        var list = <MonitorListByGroup data={this.state.data} />;
+
+        if (this.props.isWideMode) {
+            list = <MonitorList data={this.state.data} />;
+        }
+
         return (
             <div className="monitor-box">
-                <MonitorList data={this.state.data} />
+                {list}
+                <MonitorModeToggleButton onChangeWideMode={this.handleChangeWideMode} isChecked={this.props.isWideMode} />
             </div>
         );
     }
 });
 
-var MonitorList = React.createClass({
+var MonitorModeToggleButton = React.createClass({
+    getInitialState: function () {
+        var checkedValue = false;
+
+        if (typeof this.props.isChecked !== 'undefined') {
+            checkedValue = this.props.isChecked;
+        }
+
+        return {checked: checkedValue};
+    },
+    handleChange: function (e) {
+        //console.log(e.target.checked);
+        var newCheckedState = !this.state.checked;
+        this.setState({checked: newCheckedState});
+        this.props.onChangeWideMode(newCheckedState);
+    },
+    render: function () {
+        return (
+            <div class="checkbox">
+                <label><input onChange={this.handleChange} type="checkbox" checked={this.state.checked} /> Широкий экран</label>
+            </div>
+        );
+    }
+});
+
+var MonitorListByGroup = React.createClass({
     render: function () {
         if (typeof this.props.data.groups === 'undefined') {
             return false;
@@ -140,6 +175,64 @@ var MonitorGroup = React.createClass({
     }
 });
 
+var MonitorList = React.createClass({
+    render: function () {
+        if (typeof this.props.data.groups === 'undefined') {
+            return false;
+        }
+
+        var objects = [];
+        //Вынимаем все объекты в плоский массив
+        this.props.data.groups.forEach(function (group) {
+            group.objects.forEach(function (object) {
+                object.parentGroup = group;
+                objects.push(object);
+            }.bind(this));
+        }.bind(this));
+
+        //Сортируем
+        objects = objects.sort(function (a, b) {
+            //Сортировка по отключенности
+            var aDisable = (a.parentGroup.is_disable == 1 || a.is_disable == 1);
+            var bDisable = (b.parentGroup.is_disable == 1 || b.is_disable == 1);
+
+            if (aDisable > bDisable) {
+                return 1;
+            } else if (aDisable < bDisable) {
+                return -1;
+            }
+
+            //Сортировка по статусу
+            if (parseInt(a.status) > parseInt(b.status)) {
+                return 1;
+            } else if (parseInt(a.status) < parseInt(b.status)) {
+                return -1;
+            }
+
+            //Сортировка по ID
+            if (parseInt(a.id) > parseInt(b.id)) {
+                return -1;
+            } else if (parseInt(a.id) < parseInt(b.id)) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        var objectsNodes = objects.map(function (object, i) {
+            return (
+                <MonitorObject key={i} object={object} parentGroup={object.parentGroup} />
+            );
+        });
+
+        return (
+            <div className="list">
+                {objectsNodes}
+            </div>
+        );
+    }
+});
+
 var MonitorGroupHeader = React.createClass({
     render: function () {
 
@@ -148,7 +241,7 @@ var MonitorGroupHeader = React.createClass({
         var counterStatuses = [];
 
         if (this.props.counts.error > 0) {
-            if(this.props.counts.good > 0) {
+            if (this.props.counts.good > 0) {
                 counterStatuses.push(d.span({className: 'label label-success'}, this.props.counts.good));
             }
 
@@ -235,6 +328,6 @@ var MonitorObject = React.createClass({
 });
 
 React.render(
-    <MonitorBox url="/site/get-monitor-data" pollInterval={5000} />,
+    <MonitorBox isWideMode={false} url="/site/get-monitor-data" pollInterval={5000} />,
     document.getElementById('monitor-box')
 );
