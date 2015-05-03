@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Log;
 use Yii;
 use app\models\Object;
 use app\models\search\ObjectSearch;
@@ -22,7 +23,7 @@ class ObjectController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'delete-logs'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -32,6 +33,7 @@ class ObjectController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'delete-logs' => ['post'],
                 ],
             ],
         ];
@@ -124,6 +126,24 @@ class ObjectController extends Controller
         Yii::$app->getSession()->setFlash('success', 'Объект успешно удален');
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Удаляет связанные логи
+     *
+     * @param int $id
+     * @return mixed
+     */
+    public function actionDeleteLogs($id)
+    {
+        $object = $this->findModel($id);
+
+        //Удаляем связанные логи
+        Log::deleteAll(['object_id' => $object->id]);
+
+        Yii::$app->getSession()->setFlash('success', 'История успешно очищенна');
+
+        return $this->redirect(['view', 'id' => $object->id]);
     }
 
     /**

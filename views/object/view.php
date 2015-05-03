@@ -68,7 +68,20 @@ $this->params['breadcrumbs'][] = $this->title;
             </p>
         </div>
         <div class="col-md-5 col-sm-6">
-            <h2>События</h2>
+            <?php
+            $headerButton = '';
+            if (count($logs) > 0) {
+                $headerButton = ' ' . Html::a(Icon::show('trash') . 'Очистить историю', ['delete-logs', 'id' => $model->id], [
+                    'class' => 'btn btn-danger btn-xs',
+                    'data' => [
+                        'confirm' => 'Вы точно хотите очистить историю этого объекта?',
+                        'method' => 'post',
+                    ],
+                ]);
+            }
+
+            echo Html::tag('h2', 'События' . $headerButton);
+            ?>
             <?= GridView::widget([
                 'dataProvider' => new ArrayDataProvider([
                     'allModels' => $logs,
