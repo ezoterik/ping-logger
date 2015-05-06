@@ -112,6 +112,10 @@ var MonitorListByGroup = React.createClass({
 
 var MonitorGroup = React.createClass({
     render: function () {
+        if (typeof this.props.group.objects === 'undefined') {
+            return false;
+        }
+
         var counts = {
             error: 0,
             good: 0,
@@ -184,6 +188,10 @@ var MonitorList = React.createClass({
         var objects = [];
         //Вынимаем все объекты в плоский массив
         this.props.data.groups.forEach(function (group) {
+            if (typeof group.objects === 'undefined') {
+                return false;
+            }
+
             group.objects.forEach(function (object) {
                 object.parentGroup = group;
                 objects.push(object);
