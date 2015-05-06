@@ -112,10 +112,6 @@ var MonitorListByGroup = React.createClass({
 
 var MonitorGroup = React.createClass({
     render: function () {
-        if (typeof this.props.group.objects === 'undefined') {
-            return false;
-        }
-
         var counts = {
             error: 0,
             good: 0,
@@ -124,23 +120,27 @@ var MonitorGroup = React.createClass({
 
         var self = this;
 
-        var objectNodes = this.props.group.objects.map(function (object) {
-            var parentGroup = self.props.group;
+        var objectNodes = [];
 
-            if (parentGroup.is_disable == 1 || object.is_disable == 1) {
-                counts.disable++;
-            } else {
-                if (object.status <= 0) {
-                    counts.error++;
+        if (typeof this.props.group.objects !== 'undefined') {
+            objectNodes = this.props.group.objects.map(function (object) {
+                var parentGroup = self.props.group;
+
+                if (parentGroup.is_disable == 1 || object.is_disable == 1) {
+                    counts.disable++;
                 } else {
-                    counts.good++;
+                    if (object.status <= 0) {
+                        counts.error++;
+                    } else {
+                        counts.good++;
+                    }
                 }
-            }
 
-            return (
-                <MonitorObject object={object} parentGroup={parentGroup} />
-            );
-        });
+                return (
+                    <MonitorObject object={object} parentGroup={parentGroup} />
+                );
+            });
+        }
 
         var classSetOptions = {
             'panel': true
@@ -150,7 +150,7 @@ var MonitorGroup = React.createClass({
             classSetOptions['panel-warning'] = true;
         } else if (counts.error > 0) {
             classSetOptions['panel-danger'] = true;
-        } else if (this.props.group.objects.length > 0) {
+        } else if (typeof this.props.group.objects !== 'undefined' && this.props.group.objects.length > 0) {
             classSetOptions['panel-success'] = true;
         } else {
             classSetOptions['panel-default'] = true;
