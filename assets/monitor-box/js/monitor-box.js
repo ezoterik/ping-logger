@@ -58,7 +58,7 @@ var MonitorModeToggleButton = React.createClass({
     },
     render: function () {
         return (
-            <div class="checkbox">
+            <div className="checkbox">
                 <label><input onChange={this.handleChange} type="checkbox" checked={this.state.checked} /> Широкий экран</label>
             </div>
         );
