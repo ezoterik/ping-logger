@@ -276,7 +276,8 @@ var MonitorGroupHeader = React.createClass({
             pingStatus.push(
                 d.small(
                     {
-                        key: 'rtt'
+                        key: 'rtt',
+                        className: (this.props.rtt > 10 ? 'danger' : null)
                     },
                     this.props.rtt + ' ms'
                 )

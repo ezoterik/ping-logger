@@ -122,6 +122,10 @@ a.desc:after {
   -moz-opacity: 0.6;
   opacity: 0.6;
 }
+.monitor-box .panel-heading .panel-title small.danger {
+  font-weight: bold;
+  color: #ff0000;
+}
 .monitor-box .panel-heading .counter .label {
   margin-left: 5px;
   font-size: 60%;
