@@ -14,6 +14,21 @@ $config = [
     'bootstrap' => ['log'],
     'extensions' => require(__DIR__ . '/../vendor/yiisoft/extensions.php'),
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'js' => [
+                        YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
+                    ]
+                ],
+                'app\assets\ReactAsset' => [
+                    'js' => [
+                        'JSXTransformer.js',
+                        YII_ENV_DEV ? 'react-with-addons.js' : 'react-with-addons.min.js'
+                    ]
+                ],
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

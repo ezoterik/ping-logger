@@ -19,6 +19,10 @@ class MonitorBoxAsset extends AssetBundle
     ];
 
     public $depends = [
+        'yii\web\JqueryAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\web\YiiAsset',
         'omnilight\assets\MomentAsset',
         'app\assets\ReactAsset',
     ];

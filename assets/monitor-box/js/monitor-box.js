@@ -335,7 +335,9 @@ var MonitorObject = React.createClass({
     }
 });
 
-React.render(
-    <MonitorBox isWideMode={false} url="/site/get-monitor-data" pollInterval={5000} />,
-    document.getElementById('monitor-box')
-);
+$(function () {
+    React.render(
+        <MonitorBox isWideMode={false} url="/site/get-monitor-data" pollInterval={5000} />,
+        document.getElementById('monitor-box')
+    );
+});

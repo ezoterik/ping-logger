@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f16553e35cb86d98fa449843126eaa7e",
+    "hash": "392438d8c53c48eaab3db77dafd17378",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -60,16 +60,16 @@
         },
         {
             "name": "bower-asset/jquery",
-            "version": "2.1.3",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jquery/jquery.git",
-                "reference": "8f2a9d9272d6ed7f32d3a484740ab342c02541e0"
+                "reference": "7751e69b615c6eca6f783a81e292a55725af6b85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery/zipball/8f2a9d9272d6ed7f32d3a484740ab342c02541e0",
-                "reference": "8f2a9d9272d6ed7f32d3a484740ab342c02541e0",
+                "url": "https://api.github.com/repos/jquery/jquery/zipball/7751e69b615c6eca6f783a81e292a55725af6b85",
+                "reference": "7751e69b615c6eca6f783a81e292a55725af6b85",
                 "shasum": ""
             },
             "require-dev": {
@@ -84,6 +84,7 @@
                 "bower-asset-ignore": [
                     "**/.*",
                     "build",
+                    "dist/cdn",
                     "speed",
                     "test",
                     "*.md",
@@ -128,16 +129,16 @@
         },
         {
             "name": "bower-asset/jquery.inputmask",
-            "version": "3.1.62",
+            "version": "3.1.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinHerbots/jquery.inputmask.git",
-                "reference": "da1a274cefa18a52a0519ac7ffe8e8d31e950eae"
+                "reference": "c40c7287eadc31e341ebbf0c02352eb55b9cbc48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/da1a274cefa18a52a0519ac7ffe8e8d31e950eae",
-                "reference": "da1a274cefa18a52a0519ac7ffe8e8d31e950eae",
+                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/c40c7287eadc31e341ebbf0c02352eb55b9cbc48",
+                "reference": "c40c7287eadc31e341ebbf0c02352eb55b9cbc48",
                 "shasum": ""
             },
             "require": {
@@ -238,6 +239,26 @@
                     "node_modules",
                     "package.json"
                 ]
+            }
+        },
+        {
+            "name": "bower-asset/react",
+            "version": "v0.13.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactjs/react-bower.git",
+                "reference": "f68289bbb050e7ede4a3de6dac528647a6b6489a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactjs/react-bower/zipball/f68289bbb050e7ede4a3de6dac528647a6b6489a",
+                "reference": "f68289bbb050e7ede4a3de6dac528647a6b6489a",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "react.js",
+                "bower-asset-ignore": []
             }
         },
         {
@@ -514,16 +535,16 @@
         },
         {
             "name": "kartik-v/yii2-krajee-base",
-            "version": "v1.7.4",
+            "version": "v1.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-                "reference": "01e9fa8c19970070d0aba5b16a7bfd8c241bc7f9"
+                "reference": "8eec77d90752aadc40fad22177c9d5fe40249101"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/01e9fa8c19970070d0aba5b16a7bfd8c241bc7f9",
-                "reference": "01e9fa8c19970070d0aba5b16a7bfd8c241bc7f9",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/8eec77d90752aadc40fad22177c9d5fe40249101",
+                "reference": "8eec77d90752aadc40fad22177c9d5fe40249101",
                 "shasum": ""
             },
             "require": {
@@ -556,7 +577,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-02-13 03:36:35"
+            "time": "2015-05-08 22:02:25"
         },
         {
             "name": "omnilight/yii2-momentjs",
@@ -656,12 +677,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "3f455529c34da4b54aa47db076c1884c10791878"
+                "reference": "e587ae5d26786dfa69cf091e9df0587ee55bdfa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/3f455529c34da4b54aa47db076c1884c10791878",
-                "reference": "3f455529c34da4b54aa47db076c1884c10791878",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/e587ae5d26786dfa69cf091e9df0587ee55bdfa9",
+                "reference": "e587ae5d26786dfa69cf091e9df0587ee55bdfa9",
                 "shasum": ""
             },
             "require": {
@@ -736,7 +757,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-04-24 16:22:26"
+            "time": "2015-05-08 20:38:49"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
