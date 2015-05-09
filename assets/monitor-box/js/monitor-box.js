@@ -251,6 +251,21 @@ var MonitorList = React.createClass({
 });
 
 var MonitorGroupHeader = React.createClass({
+    getDefaultProps: function () {
+        return {
+            rttTrend: 0
+        };
+    },
+    componentWillReceiveProps: function (nextProps) {
+        var rttTrend = 0;
+        if (nextProps.rtt > this.props.rtt) {
+            rttTrend = 1;
+        } else if (nextProps.rtt < this.props.rtt) {
+            rttTrend = -1;
+        }
+
+        nextProps['rttTrend'] = rttTrend;
+    },
     render: function () {
         var d = React.DOM;
 
@@ -273,12 +288,21 @@ var MonitorGroupHeader = React.createClass({
         var pingStatus = [];
 
         if (this.props.rtt > 0) {
+            var trendIcon = null;
+
+            if (this.props.rttTrend > 0) {
+                trendIcon = d.i({key: 'trend-icon', className: 'fa trend-icon danger fa-long-arrow-up'}, '');
+            } else if (this.props.rttTrend < 0) {
+                trendIcon = d.i({key: 'trend-icon', className: 'fa trend-icon success fa-long-arrow-down'}, '');
+            }
+
             pingStatus.push(
                 d.small(
                     {
                         key: 'rtt',
                         className: (this.props.rtt > 10 ? 'danger' : 'success')
                     },
+                    trendIcon,
                     this.props.rtt + ' ms'
                 )
             );

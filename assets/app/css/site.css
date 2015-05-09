@@ -129,6 +129,15 @@ a.desc:after {
 .monitor-box .panel-heading .panel-title small.success {
   color: green;
 }
+.monitor-box .panel-heading .panel-title small .trend-icon {
+  margin-right: 3px;
+}
+.monitor-box .panel-heading .panel-title small .trend-icon.danger {
+  color: #ff0000;
+}
+.monitor-box .panel-heading .panel-title small .trend-icon.success {
+  color: green;
+}
 .monitor-box .panel-heading .counter .label {
   margin-left: 5px;
   font-size: 60%;

@@ -87,6 +87,7 @@ class SiteController extends Controller
 
             //Генерация случайного статуса для тестирования
             //$object['status'] = array_rand(Object::$statuses);
+            //$object['avg_rtt'] = rand(5, 20);
         }
         unset($object, $lastErrorEventsDates);
 
