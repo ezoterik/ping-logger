@@ -118,6 +118,8 @@ var MonitorGroup = React.createClass({
             disable: 0
         };
 
+        var groupRtt = 0;
+
         var self = this;
 
         var objectNodes = [];
@@ -134,6 +136,12 @@ var MonitorGroup = React.createClass({
                     } else {
                         counts.good++;
                     }
+                }
+
+                var avgRtt = parseFloat(object.avg_rtt);
+
+                if(avgRtt > groupRtt) {
+                    groupRtt = Math.round(avgRtt);
                 }
 
                 return (
@@ -167,6 +175,7 @@ var MonitorGroup = React.createClass({
                     columnId={this.props.columnId}
                     title={this.props.group.name}
                     counts={counts}
+                    rtt={groupRtt}
                     lockDate={this.props.group.lock_date}
                 />
                 <div id={groupId} className="panel-collapse collapse">
@@ -262,15 +271,29 @@ var MonitorGroupHeader = React.createClass({
         var counter = d.span({key: 'counter', className: 'counter'}, counterStatuses);
 
         var pingStatus = [];
+
+        if (this.props.rtt > 0) {
+            pingStatus.push(
+                d.small(
+                    {
+                        key: 'rtt'
+                    },
+                    this.props.rtt + ' ms'
+                )
+            );
+        }
+
         if (this.props.lockDate !== '0000-00-00 00:00:00') {
-            pingStatus = d.span(
-                {
-                    key: 'status',
-                    className: 'ping-status pull-right',
-                    'title': 'Start ping: ' + moment(this.props.lockDate).startOf('second').fromNow(),
-                    'data-toggle': 'tooltip'
-                },
-                d.i({key: 'refresh-icon', className: 'fa fa-refresh fa-spin'}, '')
+            pingStatus.push(
+                d.span(
+                    {
+                        key: 'status',
+                        className: 'ping-status pull-right',
+                        'title': 'Start ping: ' + moment(this.props.lockDate).startOf('second').fromNow(),
+                        'data-toggle': 'tooltip'
+                    },
+                    d.i({key: 'refresh-icon', className: 'fa fa-refresh fa-spin'}, '')
+                )
             );
         }
 
@@ -278,7 +301,8 @@ var MonitorGroupHeader = React.createClass({
             <div className="panel-heading">
                 <h4 className="panel-title">
                     <a className="collapse-toggle" href={'#' + this.props.groupId} data-toggle="collapse" data-parent={'#' + this.props.columnId}>
-                        <span className="title">{this.props.title}</span>{counter}
+                        <span className="title">{this.props.title}</span>
+                        {counter}
                     </a>
                     {pingStatus}
                 </h4>
