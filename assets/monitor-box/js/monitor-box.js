@@ -277,7 +277,7 @@ var MonitorGroupHeader = React.createClass({
                 d.small(
                     {
                         key: 'rtt',
-                        className: (this.props.rtt > 10 ? 'danger' : null)
+                        className: (this.props.rtt > 10 ? 'danger' : 'success')
                     },
                     this.props.rtt + ' ms'
                 )
