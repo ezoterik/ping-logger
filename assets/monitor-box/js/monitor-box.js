@@ -226,6 +226,13 @@ var MonitorList = React.createClass({
                 return -1;
             }
 
+            //Сортировка по пингу
+            if (parseFloat(a.avg_rtt) > parseFloat(b.avg_rtt)) {
+                return -1;
+            } else if (parseFloat(a.avg_rtt) < parseFloat(b.avg_rtt)) {
+                return 1;
+            }
+
             //Сортировка по ID
             if (parseInt(a.id) > parseInt(b.id)) {
                 return -1;

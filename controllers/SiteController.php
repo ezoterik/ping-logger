@@ -69,6 +69,7 @@ class SiteController extends Controller
 
         //TODO: можно пробовать использовать механизм связей
         $objects = Object::find()
+            ->orderBy('status, avg_rtt DESC')
             ->asArray()
             ->all();
 
