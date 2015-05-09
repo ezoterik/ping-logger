@@ -82,12 +82,12 @@ var MonitorListByGroup = React.createClass({
 
             var groupNodes = column.map(function (monitorGroup) {
                 return (
-                    <MonitorGroup group={monitorGroup} columnId={columnId} />
+                    <MonitorGroup key={monitorGroup.id} group={monitorGroup} columnId={columnId} />
                 );
             });
 
             return (
-                <div className={'col-md-' + colX + ' col-sd-' + colX}>
+                <div key={columnIndex} className={'col-md-' + colX + ' col-sd-' + colX}>
                     <div id={columnId} className="panel-group collapse in" aria-expanded="true">
                         {groupNodes}
                     </div>
@@ -137,7 +137,7 @@ var MonitorGroup = React.createClass({
                 }
 
                 return (
-                    <MonitorObject object={object} parentGroup={parentGroup} />
+                    <MonitorObject key={object.id} object={object} parentGroup={parentGroup} />
                 );
             });
         }
@@ -227,9 +227,9 @@ var MonitorList = React.createClass({
             return 0;
         });
 
-        var objectsNodes = objects.map(function (object, i) {
+        var objectsNodes = objects.map(function (object) {
             return (
-                <MonitorObject key={i} object={object} parentGroup={object.parentGroup} />
+                <MonitorObject key={object.id} object={object} parentGroup={object.parentGroup} />
             );
         });
 
@@ -243,34 +243,34 @@ var MonitorList = React.createClass({
 
 var MonitorGroupHeader = React.createClass({
     render: function () {
-
         var d = React.DOM;
 
         var counterStatuses = [];
 
         if (this.props.counts.error > 0) {
             if (this.props.counts.good > 0) {
-                counterStatuses.push(d.span({className: 'label label-success'}, this.props.counts.good));
+                counterStatuses.push(d.span({key: 1, className: 'label label-success'}, this.props.counts.good));
             }
 
-            counterStatuses.push(d.span({className: 'label label-danger'}, this.props.counts.error));
+            counterStatuses.push(d.span({key: 2, className: 'label label-danger'}, this.props.counts.error));
         }
 
         if (this.props.counts.disable > 0) {
-            counterStatuses.push(d.span({className: 'label label-warning'}, this.props.counts.disable));
+            counterStatuses.push(d.span({key: 3, className: 'label label-warning'}, this.props.counts.disable));
         }
 
-        var counter = d.span({className: 'counter'}, counterStatuses);
+        var counter = d.span({key: 'counter', className: 'counter'}, counterStatuses);
 
         var pingStatus = [];
         if (this.props.lockDate !== '0000-00-00 00:00:00') {
             pingStatus = d.span(
                 {
+                    key: 'status',
                     className: 'ping-status pull-right',
                     'title': 'Start ping: ' + moment(this.props.lockDate).startOf('second').fromNow(),
                     'data-toggle': 'tooltip'
                 },
-                d.i({className: 'fa fa-refresh fa-spin'}, '')
+                d.i({key: 'refresh-icon', className: 'fa fa-refresh fa-spin'}, '')
             );
         }
 
@@ -298,16 +298,16 @@ var MonitorObject = React.createClass({
         }
 
         var content = [
-            d.b({className: 'name'}, this.props.object.name),
-            d.span({className: 'ip'}, this.props.object.ip),
-            d.i({className: 'last-update'}, moment(this.props.object.updated).startOf('second').fromNow()),
-            d.span({className: 'rtt'}, this.props.object.avg_rtt + ' ms')
+            d.b({key: 'name', className: 'name'}, this.props.object.name),
+            d.span({key: 'ip', className: 'ip'}, this.props.object.ip),
+            d.i({key: 'last-update', className: 'last-update'}, moment(this.props.object.updated).startOf('second').fromNow()),
+            d.span({key: 'rtt', className: 'rtt'}, this.props.object.avg_rtt + ' ms')
         ];
 
         if (typeof this.props.object.lastErrorEventDate !== 'undefined') {
             content.push(
                 d.span(
-                    {className: 'error-date'},
+                    {key: 'error-date', className: 'error-date'},
                     moment(this.props.object.lastErrorEventDate).startOf('second').fromNow()
                 )
             );
