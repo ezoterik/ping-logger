@@ -1,4 +1,5 @@
 <?php
+use app\models\User;
 use kartik\icons\Icon;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -35,6 +36,9 @@ Icon::map($this);
 <?php $this->beginBody() ?>
     <div class="wrap">
         <?php
+            /** @var User $user */
+            $user = Yii::$app->getUser()->getIdentity();
+
             NavBar::begin([
                 'brandLabel' => 'Ping Logger',
                 'brandUrl' => Yii::$app->homeUrl,
@@ -63,7 +67,7 @@ Icon::map($this);
                     Yii::$app->user->isGuest ?
                         ['label' => Icon::show('user') . Yii::t('app', 'Login'), 'url' => ['site/login']] :
                         [
-                            'label' => Icon::show('power-off') . Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')',
+                            'label' => Icon::show('power-off') . Yii::t('app', 'Logout') . ' (' . Html::encode($user->username) . ')',
                             'url' => ['site/logout'],
                             'linkOptions' => ['data-method' => 'post']
                         ],
