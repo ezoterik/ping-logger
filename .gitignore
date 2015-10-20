@@ -21,9 +21,17 @@ composer.phar
 # Mac DS_Store Files
 .DS_Store
 
+# Apache config
+.htaccess
+
 # phpunit itself is not needed
 phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+# yii console command
 /yii
+
+.vagrant
+/puphpet
+/Vagrantfile
