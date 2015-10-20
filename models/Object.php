@@ -15,6 +15,8 @@ use yii\db\Expression;
  * @property integer $port
  * @property integer $port_udp
  * @property string $name
+ * @property string $address
+ * @property string $note
  * @property integer $group_id
  * @property integer $status
  * @property float $avg_rtt
@@ -74,14 +76,15 @@ class Object extends ActiveRecord
     public function rules()
     {
         return [
+            [['ip', 'name', 'address', 'note'], 'trim'],
+
             [['ip', 'name', 'group_id'], 'required'],
-            [['ip', 'name'], 'trim'],
             ['ip', 'string', 'max' => 15],
             ['ip', 'match', 'pattern' => '/^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/\d*)?$/'],
             [['port', 'port_udp', 'group_id'], 'integer', 'min' => 0],
             ['port', 'default', 'value' => 0],
             ['port_udp', 'default', 'value' => 0],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'address', 'note'], 'string', 'max' => 255],
             [['is_disable'], 'boolean'],
             [['group_id'], 'exist', 'targetClass' => Group::className(), 'targetAttribute' => 'id'],
         ];
@@ -98,6 +101,8 @@ class Object extends ActiveRecord
             'port' => Yii::t('app', 'Port TCP'),
             'port_udp' => Yii::t('app', 'Port UDP'),
             'name' => Yii::t('app', 'Title'),
+            'address' => Yii::t('app', 'Address'),
+            'note' => Yii::t('app', 'Note'),
             'group_id' => Yii::t('app', 'Group'),
             'status' => Yii::t('app', 'Status'),
             'avg_rtt' => Yii::t('app', 'Average RTT'),

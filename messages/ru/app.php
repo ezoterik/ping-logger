@@ -45,4 +45,6 @@ return [
     'Title' => 'Название',
     'Username' => 'Логин',
     'Is Disable' => 'Отключен',
+    'Address' => 'Адрес',
+    'Note' => 'Заметка',
 ];

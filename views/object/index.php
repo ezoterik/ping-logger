@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'rowOptions' => function ($model, $key, $index, $grid) {
+        'rowOptions' => function (Object $model, $key, $index, $grid) {
             $res = [];
 
             if ($model->is_disable) {
@@ -42,7 +42,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'text',
                 'headerOptions' => ['width' => 50]
             ],
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function (Object $data) {
+                    $res = [];
+
+                    if ($data->name != '') {
+                        $res[] = Html::tag('strong', Html::encode($data->name));
+                    }
+
+                    if ($data->address != '') {
+                        $res[] = Html::encode($data->address);
+                    }
+
+                    if ($data->note != '') {
+                        $res[] = Html::encode($data->note);
+                    }
+
+                    return implode('<br />', $res);
+                },
+            ],
             'ip',
             [
                 'attribute' => 'port',
@@ -57,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'group_id',
                 'format' => 'text',
-                'value' => function ($data) {
+                'value' => function (Object $data) {
                     return $data->group['name'];
                 },
                 'filter' => Group::getAllList(),
@@ -66,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'format' => 'text',
                 'filter' => Object::$statuses,
-                'value' => function ($model, $key, $index, $widget) {
+                'value' => function (Object $model, $key, $index, $widget) {
                     return Object::$statuses[$model->status];
                 },
                 'headerOptions' => ['width' => 80],

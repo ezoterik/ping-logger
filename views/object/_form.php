@@ -17,13 +17,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
     <div class="row">
         <div class="col-sm-4"><?= $form->field($model, 'ip')->textInput(['maxlength' => 15]) ?></div>
         <div class="col-sm-4"><?= $form->field($model, 'port')->input('number', ['min' => 1, 'max' => 65535]) ?></div>
         <div class="col-sm-4"><?= $form->field($model, 'port_udp')->input('number', ['min' => 0, 'max' => 65535]) ?></div>
     </div>
+
+    <?= $form->field($model, 'note')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'group_id')->dropDownList(Group::getAllList()) ?>
 
@@ -34,5 +37,4 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>

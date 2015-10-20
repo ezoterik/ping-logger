@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'port',
                     'port_udp',
                     'name',
+                    'address',
+                    'note',
                     [
                         'attribute' => 'group_id',
                         'format' => 'text',
