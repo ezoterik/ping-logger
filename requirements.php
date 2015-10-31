@@ -41,6 +41,14 @@ $requirements = [
         'by' => 'All DB-related classes',
         'memo' => 'Required for MySQL database.',
     ],
+    // Shell
+    [
+        'name' => 'Nping',
+        'mandatory' => false,
+        'condition' => (`which nping`),
+        'by' => 'Console command execution',
+        'memo' => 'Required for the complete ping process.',
+    ],
     // PHP ini :
     'phpSafeMode' => [
         'name' => 'PHP safe mode',
