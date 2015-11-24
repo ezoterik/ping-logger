@@ -63,6 +63,15 @@ $config = [
                 ],
             ],
         ],
+        'formatter' => [
+            'dateFormat' => 'dd.MM.Y',
+            'timeFormat' => 'H:mm:ss',
+            'datetimeFormat' => 'dd.MM.Y H:mm',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'UAH',
+            'sizeFormatBase' => 1000,
+        ],
     ],
     'params' => ArrayHelper::merge([
         'icon-framework' => 'fa',

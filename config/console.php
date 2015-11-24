@@ -28,6 +28,15 @@ return [
             'class' => 'yii\mutex\FileMutex'
         ],
         'db' => $db,
+        'formatter' => [
+            'dateFormat' => 'dd.MM.Y',
+            'timeFormat' => 'H:mm:ss',
+            'datetimeFormat' => 'dd.MM.Y H:mm',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'UAH',
+            'sizeFormatBase' => 1000,
+        ],
     ],
     'params' => $params,
 ];
