@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'format' => 'text',
                 'filter' => Object::$statuses,
-                'value' => function (Object $model, $key, $index, $widget) {
+                'value' => function (Object $model) {
                     return Object::$statuses[$model->status];
                 },
                 'headerOptions' => ['width' => 80],
@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'boolean',
                 'filter' => [0 => 'Нет', 1 => 'Да'],
             ],
-            'updated',
+            'updated:datetime',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => ['width' => 80]

@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'is_disable',
                         'format' => 'boolean',
                     ],
-                    'updated',
+                    'updated:datetime',
                 ],
             ]) ?>
             <p>
@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $res;
                 },
                 'columns' => [
-                    'created',
+                    'created:datetime',
                     [
                         'attribute' => 'event_num',
                         'format' => 'text',
