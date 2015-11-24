@@ -6,9 +6,8 @@ use app\models\Group;
 use app\models\Log;
 use app\models\Object;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\console\Controller;
-use yii\db\Expression;
-use yii\log\Logger;
 
 class PingController extends Controller
 {
@@ -101,7 +100,7 @@ class PingController extends Controller
     public function actionPingGroup($groupId)
     {
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
-        /** @var \app\models\Object[] $objects */
+        /** @var \app\models\Object[]|TimestampBehavior[] $objects */
         $objects = Object::find()
             ->where(['group_id' => $groupId, 'is_disable' => false])
             ->orderBy('status DESC')
