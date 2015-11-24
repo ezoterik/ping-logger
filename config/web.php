@@ -32,6 +32,19 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'log' => [
+            'targets' => [
+                'file' => [
+                    'class' => 'yii\log\FileTarget',
+                    'except' => [
+                        'yii\web\HttpException:404',
+                        'yii\web\HttpException:403',
+                    ],
+                    'levels' => ['error', 'warning'],
+                    'logFile' => '@runtime/logs/web.log',
+                ],
+            ],
+        ],
         'user' => [
             'class' => 'app\components\User',
             'identityClass' => 'app\models\User',
