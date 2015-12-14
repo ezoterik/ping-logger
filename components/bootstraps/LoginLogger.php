@@ -35,9 +35,14 @@ class LoginLogger implements BootstrapInterface
     {
         $user = User::findIdentity($event->identity->getId());
 
+        //Обход проблемы, когда nginx в роли прокси
+        if (isset($_SERVER['HTTP_X_REAL_IP'])) {
+            $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_REAL_IP'];
+        }
+
         $data = [
             Yii::$app->formatter->asDatetime(time(), 'yyyy-MM-dd HH:mm:ss'),
-            (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0'),
+            Yii::$app->request->getUserIP(),
             $user->username,
         ];
 
