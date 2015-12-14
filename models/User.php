@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -14,6 +15,8 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
 
     /**
      * @inheritdoc
+     *
+     * @return IdentityInterface|User|null
      */
     public static function findIdentity($id)
     {

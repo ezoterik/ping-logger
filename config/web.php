@@ -11,7 +11,10 @@ $config = [
     'sourceLanguage' => 'en-US',
     'timeZone' => 'Europe/Kiev',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        '\app\components\bootstraps\LoginLogger',
+    ],
     'extensions' => require(__DIR__ . '/../vendor/yiisoft/extensions.php'),
     'components' => [
         'assetManager' => [
