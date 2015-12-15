@@ -13,7 +13,7 @@ $config = [
         'log' => [
             'traceLevel' => 3,
             'targets' => [
-                [
+                'file' => [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
