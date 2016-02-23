@@ -16,7 +16,7 @@
         {
             "name": "Oleg Balykin",
             "email": "ezoterik.h@gmail.com",
-            "homepage": "http://dev.ezoterik.info",
+            "homepage": "http://ezoterik.name",
             "role": "Developer"
         }
     ],
@@ -26,7 +26,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0",
-        "yiisoft/yii2": "2.0.*@dev",
+        "yiisoft/yii2": "2.0.7",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "kartik-v/yii2-icons": "dev-master",

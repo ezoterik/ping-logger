@@ -10,7 +10,7 @@ You can then install the application using the following command:
 
 ```
 git clone git@bitbucket.org:ezoterik/ping_logger.git
-composer global require "fxp/composer-asset-plugin:~1.0.0"
+composer global require "fxp/composer-asset-plugin:~1.1.1"
 cd ping_logger
 composer install
 ```
