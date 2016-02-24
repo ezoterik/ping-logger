@@ -4,9 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8740e14535b2e2432f16bc40a4efe081",
-    "content-hash": "c62c3a88bab3717702eef23703d15caa",
+    "hash": "4e61d8b9d4ac418b1e6b0617c7796015",
+    "content-hash": "7115091d010b639760872d126c4b3926",
     "packages": [
+        {
+            "name": "baibaratsky/yii2-rollbar",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/baibaratsky/yii2-rollbar.git",
+                "reference": "a22f78fa6e7dfa7d66454f17a49d44839f81f582"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/baibaratsky/yii2-rollbar/zipball/a22f78fa6e7dfa7d66454f17a49d44839f81f582",
+                "reference": "a22f78fa6e7dfa7d66454f17a49d44839f81f582",
+                "shasum": ""
+            },
+            "require": {
+                "rollbar/rollbar": "~0.15.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "baibaratsky\\yii\\rollbar\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Andrei Baibaratsky",
+                    "email": "andrei@baibaratsky.com"
+                }
+            ],
+            "description": "Rollbar for Yii2",
+            "homepage": "http://github.com/baibaratsky/yii2-rollbar",
+            "keywords": [
+                "debug",
+                "error",
+                "exception",
+                "log",
+                "monitoring",
+                "ratchet.io",
+                "ratchetio",
+                "rollbar",
+                "yii",
+                "yii2"
+            ],
+            "time": "2016-02-05 10:17:49"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.5",
@@ -469,7 +519,7 @@
         },
         {
             "name": "kartik-v/yii2-icons",
-            "version": "dev-master",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-icons.git",
@@ -563,7 +613,7 @@
         },
         {
             "name": "omnilight/yii2-momentjs",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/omnilight/yii2-momentjs.git",
@@ -600,6 +650,55 @@
                 "yii2"
             ],
             "time": "2015-02-23 11:33:26"
+        },
+        {
+            "name": "rollbar/rollbar",
+            "version": "v0.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rollbar/rollbar-php.git",
+                "reference": "f4ead5be5e52443f0c9e0272a0cd5813a5b3199a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rollbar/rollbar-php/zipball/f4ead5be5e52443f0c9e0272a0cd5813a5b3199a",
+                "reference": "f4ead5be5e52443f0c9e0272a0cd5813a5b3199a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "4.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/rollbar.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rollbar, Inc.",
+                    "email": "support@rollbar.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Monitors errors and exceptions and reports them to Rollbar",
+            "homepage": "http://github.com/rollbar/rollbar-php",
+            "keywords": [
+                "debugging",
+                "errors",
+                "exceptions",
+                "logging",
+                "monitoring"
+            ],
+            "time": "2015-07-29 00:03:24"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1255,10 +1354,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kartik-v/yii2-icons": 20,
-        "omnilight/yii2-momentjs": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
