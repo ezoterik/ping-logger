@@ -2,8 +2,8 @@
 
 use yii\helpers\ArrayHelper;
 
-$params = require(__DIR__ . '/params.php');
-$db = require(__DIR__ . '/db.php');
+$params = require __DIR__ . '/params-local.php';
+$db = require __DIR__ . '/db-local.php';
 
 $config = [
     'id' => 'ping-logger-web',
@@ -15,20 +15,23 @@ $config = [
         'log',
         '\app\components\bootstraps\LoginLogger',
     ],
-    'extensions' => require(__DIR__ . '/../vendor/yiisoft/extensions.php'),
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
+    ],
     'components' => [
         'assetManager' => [
             'bundles' => [
                 'yii\web\JqueryAsset' => [
                     'js' => [
-                        YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
-                    ]
+                        YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js',
+                    ],
                 ],
                 'app\assets\ReactAsset' => [
                     'js' => [
                         'JSXTransformer.js',
-                        YII_ENV_DEV ? 'react-with-addons.js' : 'react-with-addons.min.js'
-                    ]
+                        YII_ENV_DEV ? 'react-with-addons.js' : 'react-with-addons.min.js',
+                    ],
                 ],
             ],
         ],
@@ -36,18 +39,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'log' => [
-            'targets' => [
-                'file' => [
-                    'class' => 'yii\log\FileTarget',
-                    'except' => [
-                        'yii\web\HttpException:404',
-                        'yii\web\HttpException:403',
-                        'yii\web\User::loginByCookie',
-                    ],
-                    'levels' => ['error', 'warning'],
-                    'logFile' => '@runtime/logs/web.log',
-                ],
-            ],
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'targets' => [],
         ],
         'user' => [
             'class' => 'app\components\User',
@@ -57,15 +50,12 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                '' => 'site/index',
-                '<_a:(login|logout)>' => 'site/<action>',
-                '<_c:\w+>/<id:\d+>' => '<_c>/view',
-                '<_c:(object|group)>' => '<_c>/index',
-            ]
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
         ],
         'db' => $db,
         'i18n' => [
@@ -97,7 +87,24 @@ $config = [
 
 $config = ArrayHelper::merge(
     $config,
-    require(__DIR__ . '/' . YII_ENV . '/web.php')
+    require(__DIR__ . '/web-local.php')
 );
+
+if (YII_ENV_DEV) {
+    // configuration adjustments for 'dev' environment
+    $config['bootstrap'][] = 'debug';
+    $config['modules']['debug'] = [
+        'class' => 'yii\debug\Module',
+        // uncomment the following to add your IP if you are not connecting from localhost.
+        'allowedIPs' => ['127.0.0.1', '::1', '192.168.83.*'],
+    ];
+
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+        // uncomment the following to add your IP if you are not connecting from localhost.
+        'allowedIPs' => ['127.0.0.1', '::1', '192.168.83.*'],
+    ];
+}
 
 return $config;

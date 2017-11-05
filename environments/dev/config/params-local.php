@@ -7,8 +7,8 @@ return [
             'id' => '100',
             'username' => 'admin',
             'password' => 'admin',
-            'authKey' => 'xxxxxx100',
-            'accessToken' => 'cccccc100',
+            'authKey' => 'qkUj4F3cmmHUTPZeTEotEAwVNyYdToK',
+            'accessToken' => 'vXisUofvoi3HEcjFnfqukxC3CsXRnF',
         ],
     ],
 ];

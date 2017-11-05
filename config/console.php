@@ -1,11 +1,9 @@
 <?php
 
-Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
+$params = require __DIR__ . '/params-local.php';
+$db = require __DIR__ . '/db-local.php';
 
-$params = require(__DIR__ . '/params.php');
-$db = require(__DIR__ . '/db.php');
-
-return [
+$config = [
     'id' => 'ping-logger-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -25,7 +23,7 @@ return [
             ],
         ],
         'mutex' => [
-            'class' => 'yii\mutex\FileMutex'
+            'class' => 'yii\mutex\FileMutex',
         ],
         'db' => $db,
         'formatter' => [
@@ -40,3 +38,13 @@ return [
     ],
     'params' => $params,
 ];
+
+if (YII_ENV_DEV) {
+    // configuration adjustments for 'dev' environment
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+    ];
+}
+
+return $config;
