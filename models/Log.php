@@ -4,32 +4,29 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 
 /**
- * This is the model class for table "{{%log}}".
- *
  * @property string $object_id
- * @property integer $event_num
- * @property string $created
+ * @property int $event_num
+ * @property int $created_at
  *
- * @property \app\models\Object $object
+ * @property PingObject $object
+ *
+ * @mixin TimestampBehavior
  */
 class Log extends ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%log}}';
     }
 
-    const EVENT_ERROR = 0;
-    const EVENT_GOOD = 1;
+    public const EVENT_ERROR = 0;
+    public const EVENT_GOOD = 1;
 
-    public static $events = [
+    public static array $events = [
         self::EVENT_ERROR => 'Off',
         self::EVENT_GOOD => 'On',
     ];
@@ -38,43 +35,35 @@ class Log extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created'],
-                    //ActiveRecord::EVENT_BEFORE_UPDATE => ['updated'],
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
                 ],
-                'value' => new Expression('NOW()'),
             ],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['object_id', 'event_num'], 'required'],
             [['object_id', 'event_num'], 'integer'],
-            [['event_num'], 'in', 'range' => array_keys(self::$events)],
-            [['object_id'], 'exist', 'targetClass' => Object::className(), 'targetAttribute' => 'id'],
+            ['event_num', 'in', 'range' => array_keys(self::$events)],
+            ['object_id', 'exist', 'targetClass' => PingObject::class, 'targetAttribute' => 'id'],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'object_id' => Yii::t('app', 'Object'),
             'event_num' => Yii::t('app', 'Event'),
-            'created' => Yii::t('app', 'Date'),
+            'created_at' => Yii::t('app', 'Date'),
         ];
     }
 
-    public function getObject()
+    public function getObject(): ActiveQuery
     {
-        return $this->hasOne(Object::className(), ['id' => 'object_id']);
+        return $this->hasOne(PingObject::class, ['id' => 'object_id']);
     }
 }

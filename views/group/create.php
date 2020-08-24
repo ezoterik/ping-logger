@@ -1,22 +1,20 @@
 <?php
-
-use yii\helpers\Html;
-
 /**
- * @var yii\web\View $this
- * @var app\models\Group $model
+ * @var View $this
+ * @var Group $model
  */
 
-$this->title = 'Создание группы';
-$this->params['breadcrumbs'][] = ['label' => 'Группы', 'url' => ['index']];
+use app\models\Group;
+use yii\helpers\Html;
+use yii\web\View;
+
+$this->title = Yii::t('app', 'Creating a group');
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="group-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+echo Html::tag('h1', Html::encode($this->title));
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+echo $this->render('_form', [
+    'model' => $model,
+]);

@@ -1,6 +1,8 @@
 <?php
 
-$config = [
+use yii\caching\MemCache;
+
+return [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -10,7 +12,7 @@ $config = [
             'useFileTransport' => false,
         ],
         'cache' => [
-            'class' => 'yii\caching\MemCache',
+            'class' => MemCache::class,
             'servers' => [
                 [
                     'host' => '127.0.0.1',
@@ -33,7 +35,8 @@ $config = [
                 ],
             ],
         ],
+        'assetManager' => [
+            'linkAssets' => true,
+        ],
     ],
 ];
-
-return $config;

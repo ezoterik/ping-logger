@@ -1,23 +1,21 @@
 <?php
-
-use yii\helpers\Html;
-
 /**
- * @var yii\web\View $this
- * @var app\models\Object $model
+ * @var View $this
+ * @var PingObject $model
  */
 
-$this->title = 'Редактирование объекта: ' . $model->name;
+use app\models\PingObject;
+use yii\helpers\Html;
+use yii\web\View;
+
+$this->title = Yii::t('app', 'Editing an object') . ': ' . $model->name;
+
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Object'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Редактирование';
-?>
-<div class="object-update">
+$this->params['breadcrumbs'][] = Yii::t('app', 'Editing');
 
-    <h1><?= Html::encode($this->title) ?></h1>
+echo Html::tag('h1', Html::encode($this->title));
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+echo $this->render('_form', [
+    'model' => $model,
+]);

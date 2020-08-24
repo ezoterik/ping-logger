@@ -2,39 +2,35 @@
 
 namespace app\models\search;
 
-use Yii;
+use app\models\Group;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Group;
 
-/**
- * GroupSearch represents the model behind the search form about `app\models\Group`.
- */
 class GroupSearch extends Group
 {
-    public function rules()
+    public function rules(): array
     {
         return [
-            [['id'], 'integer'],
-            [['is_disable'], 'boolean'],
-            [['name'], 'safe'],
+            ['id', 'integer'],
+            ['is_disable', 'boolean'],
+            ['name', 'safe'],
         ];
     }
 
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = Group::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['id' => SORT_DESC]
+                'defaultOrder' => ['id' => SORT_DESC],
             ],
         ]);
 

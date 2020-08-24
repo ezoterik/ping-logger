@@ -1,6 +1,12 @@
 <?php
 
+use app\components\bootstraps\LoginLogger;
+use app\models\User;
+use kartik\icons\Icon;
+use yii\caching\FileCache;
 use yii\helpers\ArrayHelper;
+use yii\i18n\PhpMessageSource;
+use yii\swiftmailer\Mailer;
 
 $params = require __DIR__ . '/params-local.php';
 $db = require __DIR__ . '/db-local.php';
@@ -13,7 +19,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',
-        '\app\components\bootstraps\LoginLogger',
+        LoginLogger::class,
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -36,22 +42,21 @@ $config = [
             ],
         ],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => FileCache::class,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [],
         ],
         'user' => [
-            'class' => 'app\components\User',
-            'identityClass' => 'app\models\User',
+            'identityClass' => User::class,
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => Mailer::class,
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
@@ -61,7 +66,7 @@ $config = [
         'i18n' => [
             'translations' => [
                 'app*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => PhpMessageSource::class,
                     'basePath' => '@app/messages',
                     'sourceLanguage' => 'en-US',
                     'fileMap' => [
@@ -81,7 +86,7 @@ $config = [
         ],
     ],
     'params' => ArrayHelper::merge([
-        'icon-framework' => 'fa',
+        'icon-framework' => Icon::FA,
     ], $params),
 ];
 

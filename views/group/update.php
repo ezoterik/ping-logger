@@ -1,23 +1,21 @@
 <?php
-
-use yii\helpers\Html;
-
 /**
- * @var yii\web\View $this
- * @var app\models\Group $model
+ * @var View $this
+ * @var Group $model
  */
 
-$this->title = 'Редактирование группы: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Группы', 'url' => ['index']];
+use app\models\Group;
+use yii\helpers\Html;
+use yii\web\View;
+
+$this->title = Yii::t('app', 'Editing a group') . ': ' . $model->name;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Редактирование';
-?>
-<div class="group-update">
+$this->params['breadcrumbs'][] = Yii::t('app', 'Editing');
 
-    <h1><?= Html::encode($this->title) ?></h1>
+echo Html::tag('h1', Html::encode($this->title));
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+echo $this->render('_form', [
+    'model' => $model,
+]);

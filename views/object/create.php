@@ -1,22 +1,20 @@
 <?php
-
-use yii\helpers\Html;
-
 /**
- * @var yii\web\View $this
- * @var app\models\Object $model
+ * @var View $this
+ * @var PingObject $model
  */
 
-$this->title = 'Создание объекта';
+use app\models\PingObject;
+use yii\helpers\Html;
+use yii\web\View;
+
+$this->title = Yii::t('app', 'Creating an object');
+
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Objects'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="object-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+echo Html::tag('h1', Html::encode($this->title));
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+echo $this->render('_form', [
+    'model' => $model,
+]);

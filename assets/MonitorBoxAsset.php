@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
 
 namespace app\assets;
 
@@ -15,7 +15,7 @@ class MonitorBoxAsset extends AssetBundle
     ];
 
     public $jsOptions = [
-        'type' => 'text/jsx'
+        'type' => 'text/jsx',
     ];
 
     public $depends = [

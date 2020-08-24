@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset name="Application">
+    <!-- https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties -->
+    <!-- https://github.com/hellowearemito/yii2-coding-standards/blob/master/Application/ruleset.xml -->
+    <description>A custom coding standard witch is based on "Yii 2 Web Application Framework Coding Standard"</description>
+
+    <rule ref="./vendor/yiisoft/yii2-coding-standards/Yii2"/>
+
+    <!-- Ignore declare new symbols and execute logic with side effects same file -->
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>bootstrap.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.ControlStructures.InlineControlStructure" />
+
+    <!-- [] instead of array() -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <exclude-pattern>/vendor/*</exclude-pattern>
+</ruleset>

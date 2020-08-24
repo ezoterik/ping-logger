@@ -21,11 +21,15 @@ composer config --global github-oauth.github.com ${github_token}
 echo "Done!"
 
 info "Install project dependencies"
+# shellcheck disable=SC2164
 cd /app
-composer --no-progress --prefer-dist install
+composer --no-progress global require hirak/prestissimo
+composer --no-progress install
 
 info "Init project"
 ./init --env=Development --overwrite=n
+#Почему-то без задержки не успевают примениться права на выполнение yii и yii_test
+sleep 0.5
 
 info "Apply migrations"
 ./yii migrate --interactive=0

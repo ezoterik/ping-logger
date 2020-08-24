@@ -1,6 +1,8 @@
 <?php
 
-$config = [
+use yii\log\FileTarget;
+
+return [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -9,7 +11,7 @@ $config = [
         'log' => [
             'targets' => [
                 'file' => [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => FileTarget::class,
                     'except' => [
                         'yii\web\HttpException:404',
                         'yii\web\HttpException:403',
@@ -22,5 +24,3 @@ $config = [
         ],
     ],
 ];
-
-return $config;

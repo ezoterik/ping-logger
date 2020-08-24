@@ -1,4 +1,9 @@
 <?php
+
+use app\models\User;
+use kartik\icons\Icon;
+use yii\helpers\ArrayHelper;
+
 $params = require __DIR__ . '/params-local.php';
 $db = require __DIR__ . '/test_db.php';
 
@@ -25,7 +30,7 @@ return [
             'showScriptName' => true,
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => User::class,
         ],
         'request' => [
             'cookieValidationKey' => 'test',
@@ -38,5 +43,7 @@ return [
             */
         ],
     ],
-    'params' => $params,
+    'params' => ArrayHelper::merge([
+        'icon-framework' => Icon::FA,
+    ], $params),
 ];

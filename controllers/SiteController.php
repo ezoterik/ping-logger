@@ -2,26 +2,26 @@
 
 namespace app\controllers;
 
-use app\models\Log;
+use app\models\form\LoginForm;
 use app\models\Group;
-use app\models\Object;
+use app\models\Log;
+use app\models\PingObject;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\db\Query;
-use app\models\LoginForm;
+use yii\web\ErrorAction;
 use yii\web\Response;
 
 class SiteController extends Controller
 {
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                //'only' => ['logout'],
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login'],
@@ -36,7 +36,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                     'get-monitor-data' => ['get'],
@@ -45,11 +45,11 @@ class SiteController extends Controller
         ];
     }
 
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => ErrorAction::class,
             ],
         ];
     }
@@ -67,14 +67,13 @@ class SiteController extends Controller
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        //TODO: можно пробовать использовать механизм связей
-        $objects = Object::find()
-            ->orderBy('status, avg_rtt DESC')
+        $objects = PingObject::find()
+            ->orderBy(['status' => SORT_ASC, 'avg_rtt' => SORT_DESC])
             ->asArray()
             ->all();
 
         $lastErrorEventsDates = (new Query())
-            ->select('object_id, MAX(created) AS last_error_event')
+            ->select(['object_id', 'MAX(created_at) AS last_error_event'])
             ->from(Log::tableName())
             ->where(['event_num' => Log::EVENT_ERROR])
             ->groupBy('object_id')
@@ -83,7 +82,7 @@ class SiteController extends Controller
 
         foreach ($objects as &$object) {
             if (isset($lastErrorEventsDates[$object['id']])) {
-                $object['lastErrorEventDate'] = $lastErrorEventsDates[$object['id']]['last_error_event'];
+                $object['lastErrorEventDate'] = Yii::$app->formatter->asDatetime($lastErrorEventsDates[$object['id']]['last_error_event'], 'php:c');
             }
 
             //Генерация случайного статуса для тестирования
@@ -119,11 +118,11 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     public function actionLogout()

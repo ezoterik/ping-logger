@@ -7,7 +7,7 @@ required_plugins.each do |plugin|
 end
 
 domains = {
-  frontend: 'ping.dev'
+  frontend: 'ping-logger.local'
 }
 
 config = {
@@ -70,6 +70,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision 'shell', path: './vagrant/provision/once-as-root.sh', args: [options['timezone']]
   config.vm.provision 'shell', path: './vagrant/provision/once-as-vagrant.sh', args: [options['github_token']], privileged: false
   config.vm.provision 'shell', path: './vagrant/provision/always-as-root.sh', run: 'always'
+  config.vm.provision 'shell', path: './vagrant/provision/always-as-vagrant.sh', run: 'always', privileged: false
 
   # post-install message (vagrant console)
   config.vm.post_up_message = "Frontend URL: http://#{domains[:frontend]}"

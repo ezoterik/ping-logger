@@ -25,16 +25,17 @@ var MonitorBox = React.createClass({
         this.setProps({isWideMode: newIsWideMode});
     },
     render: function () {
-        var list = <MonitorListByGroup data={this.state.data} />;
+        var list = <MonitorListByGroup data={this.state.data}/>;
 
         if (this.props.isWideMode) {
-            list = <MonitorList data={this.state.data} />;
+            list = <MonitorList data={this.state.data}/>;
         }
 
         return (
             <div className="monitor-box">
                 {list}
-                <MonitorModeToggleButton onChangeWideMode={this.handleChangeWideMode} isChecked={this.props.isWideMode} />
+                <MonitorModeToggleButton onChangeWideMode={this.handleChangeWideMode}
+                                         isChecked={this.props.isWideMode}/>
             </div>
         );
     }
@@ -59,7 +60,7 @@ var MonitorModeToggleButton = React.createClass({
     render: function () {
         return (
             <div className="checkbox">
-                <label><input onChange={this.handleChange} type="checkbox" checked={this.state.checked} /> Широкий экран</label>
+                <label><input onChange={this.handleChange} type="checkbox" checked={this.state.checked}/> Широкий экран</label>
             </div>
         );
     }
@@ -82,7 +83,7 @@ var MonitorListByGroup = React.createClass({
 
             var groupNodes = column.map(function (monitorGroup) {
                 return (
-                    <MonitorGroup key={monitorGroup.id} group={monitorGroup} columnId={columnId} />
+                    <MonitorGroup key={monitorGroup.id} group={monitorGroup} columnId={columnId}/>
                 );
             });
 
@@ -128,7 +129,7 @@ var MonitorGroup = React.createClass({
             objectNodes = this.props.group.objects.map(function (object) {
                 var parentGroup = self.props.group;
 
-                if (parentGroup.is_disable == 1 || object.is_disable == 1) {
+                if (parentGroup.is_disable === 1 || object.is_disable === 1) {
                     counts.disable++;
                 } else {
                     if (object.status <= 0) {
@@ -140,12 +141,12 @@ var MonitorGroup = React.createClass({
 
                 var avgRtt = parseFloat(object.avg_rtt);
 
-                if(avgRtt > groupRtt) {
+                if (avgRtt > groupRtt) {
                     groupRtt = Math.round(avgRtt);
                 }
 
                 return (
-                    <MonitorObject key={object.id} object={object} parentGroup={parentGroup} />
+                    <MonitorObject key={object.id} object={object} parentGroup={parentGroup}/>
                 );
             });
         }
@@ -154,7 +155,7 @@ var MonitorGroup = React.createClass({
             'panel': true
         };
 
-        if (this.props.group.is_disable == 1) {
+        if (this.props.group.is_disable === 1) {
             classSetOptions['panel-warning'] = true;
         } else if (counts.error > 0) {
             classSetOptions['panel-danger'] = true;
@@ -176,7 +177,7 @@ var MonitorGroup = React.createClass({
                     title={this.props.group.name}
                     counts={counts}
                     rtt={groupRtt}
-                    lockDate={this.props.group.lock_date}
+                    lockDate={this.props.group.lock_at}
                 />
                 <div id={groupId} className="panel-collapse collapse">
                     <div className="panel-body">
@@ -210,8 +211,8 @@ var MonitorList = React.createClass({
         //Сортируем
         objects = objects.sort(function (a, b) {
             //Сортировка по отключенности
-            var aDisable = (a.parentGroup.is_disable == 1 || a.is_disable == 1);
-            var bDisable = (b.parentGroup.is_disable == 1 || b.is_disable == 1);
+            var aDisable = (a.parentGroup.is_disable === 1 || a.is_disable === 1);
+            var bDisable = (b.parentGroup.is_disable === 1 || b.is_disable === 1);
 
             if (aDisable > bDisable) {
                 return 1;
@@ -245,7 +246,7 @@ var MonitorList = React.createClass({
 
         var objectsNodes = objects.map(function (object) {
             return (
-                <MonitorObject key={object.id} object={object} parentGroup={object.parentGroup} />
+                <MonitorObject key={object.id} object={object} parentGroup={object.parentGroup}/>
             );
         });
 
@@ -315,7 +316,7 @@ var MonitorGroupHeader = React.createClass({
             );
         }
 
-        if (this.props.lockDate !== '0000-00-00 00:00:00') {
+        if (this.props.lockDate) {
             pingStatus.push(
                 d.span(
                     {
@@ -324,7 +325,7 @@ var MonitorGroupHeader = React.createClass({
                         'title': 'Start ping: ' + moment(this.props.lockDate).startOf('second').fromNow(),
                         'data-toggle': 'tooltip'
                     },
-                    d.i({key: 'refresh-icon', className: 'fa fa-refresh fa-spin'}, '')
+                    d.i({key: 'sync-icon', className: 'fa fa-sync fa-spin'}, '')
                 )
             );
         }
@@ -332,7 +333,8 @@ var MonitorGroupHeader = React.createClass({
         return (
             <div className="panel-heading">
                 <h4 className="panel-title">
-                    <a className="collapse-toggle" href={'#' + this.props.groupId} data-toggle="collapse" data-parent={'#' + this.props.columnId}>
+                    <a className="collapse-toggle" href={'#' + this.props.groupId} data-toggle="collapse"
+                       data-parent={'#' + this.props.columnId}>
                         <span className="title">{this.props.title}</span>
                         {counter}
                     </a>
@@ -356,11 +358,16 @@ var MonitorObject = React.createClass({
         var content = [
             d.b({key: 'name', className: 'name'}, this.props.object.name),
             d.span({key: 'ip', className: 'ip'}, this.props.object.ip),
-            d.i({key: 'last-update', className: 'last-update'}, moment(this.props.object.updated).startOf('second').fromNow()),
+            d.i({
+                key: 'last-update',
+                className: 'last-update'
+            }, moment(this.props.object.updated).startOf('second').fromNow()),
             d.span({key: 'rtt', className: 'rtt'}, this.props.object.avg_rtt + ' ms')
         ];
 
         if (typeof this.props.object.lastErrorEventDate !== 'undefined') {
+            console.log(this.props.object.lastErrorEventDate);
+
             content.push(
                 d.span(
                     {key: 'error-date', className: 'error-date'},
@@ -373,9 +380,9 @@ var MonitorObject = React.createClass({
             'obj': true
         };
 
-        if (this.props.parentGroup.is_disable == 1 || this.props.object.is_disable == 1) {
+        if (this.props.parentGroup.is_disable === 1 || this.props.object.is_disable === 1) {
             classSetOptions['disable'] = true;
-        } else if (this.props.object.status == 0) {
+        } else if (this.props.object.status === 0) {
             classSetOptions['bad'] = true;
         } else {
             classSetOptions['good'] = true;
@@ -392,8 +399,10 @@ var MonitorObject = React.createClass({
 });
 
 $(function () {
+    let $monitorBox = $('#monitor-box');
+
     React.render(
-        <MonitorBox isWideMode={false} url="/site/get-monitor-data" pollInterval={5000} />,
+        <MonitorBox isWideMode={false} url={$monitorBox.data('url')} pollInterval={5000}/>,
         document.getElementById('monitor-box')
     );
 });

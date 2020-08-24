@@ -6,6 +6,8 @@ use app\models\User;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
+use yii\web\User as YiiWebUser;
 use yii\web\UserEvent;
 
 /**
@@ -13,15 +15,11 @@ use yii\web\UserEvent;
  */
 class LoginLogger implements BootstrapInterface
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function bootstrap($app)
+    public function bootstrap($app): void
     {
         Event::on(
-            \yii\web\User::className(),
-            \yii\web\User::EVENT_AFTER_LOGIN,
+            YiiWebUser::class,
+            YiiWebUser::EVENT_AFTER_LOGIN,
             [$this, 'afterLogin']
         );
     }
@@ -30,8 +28,10 @@ class LoginLogger implements BootstrapInterface
      * Сохраняет данные о входе в лог
      *
      * @param UserEvent $event
+     *
+     * @throws InvalidConfigException
      */
-    public function afterLogin(UserEvent $event)
+    public function afterLogin(UserEvent $event): void
     {
         $user = User::findIdentity($event->identity->getId());
 

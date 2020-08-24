@@ -4,16 +4,15 @@ namespace app\commands;
 
 use app\models\Group;
 use app\models\Log;
-use app\models\Object;
+use app\models\PingObject;
 use Yii;
-use yii\behaviors\TimestampBehavior;
 use yii\console\Controller;
 
 class PingController extends Controller
 {
-    const AVG_RTT_COUNT_PACKAGES = 50;
-    const AVG_RTT_DELAY_TCP_AND_UDP = 0.1;
-    const AVG_RTT_DELAY_ICMP = 0.1;
+    public const AVG_RTT_COUNT_PACKAGES = 50;
+    public const AVG_RTT_DELAY_TCP_AND_UDP = 0.1;
+    public const AVG_RTT_DELAY_ICMP = 0.1;
 
     /**
      * Пингует все объекты
@@ -27,10 +26,7 @@ class PingController extends Controller
         /** @var Group[] $groups */
         $groups = Group::find()
             ->select(['id'])
-            ->where([
-                'is_disable' => false,
-                'lock_date' => '0000-00-00 00:00:00',
-            ])
+            ->where(['is_disable' => false, 'lock_at' => null])
             ->indexBy('id')
             ->all();
 
@@ -44,10 +40,10 @@ class PingController extends Controller
         //shell_exec($cmd . " > /dev/null &");
         //https://florian.ec/articles/running-background-processes-in-php/
 
-        $descriptorspec = [
-            0 => ["pipe", "r"],
-            1 => ["pipe", "w"],
-            2 => ["file", Yii::getAlias('@runtime') . '/shel_errors.txt', "a"]
+        $descriptorSpec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['file', Yii::getAlias('@runtime/shel_errors.txt') . '', 'a'],
         ];
 
         $process = [];
@@ -58,7 +54,7 @@ class PingController extends Controller
         //Запускаем по процессу на каждую группу
         foreach ($groups as $group) {
             if (!isset($process[$group->id]) || !is_resource($process[$group->id])) {
-                $process[$group->id] = proc_open('exec ' . Yii::getAlias('@app') . '/yii ping/ping-group ' . $group->id, $descriptorspec, $pipes[$group->id]);
+                $process[$group->id] = proc_open('exec ' . Yii::getAlias('@app') . '/yii ping/ping-group ' . $group->id, $descriptorSpec, $pipes[$group->id]);
                 $procLastOutput[$group->id] = time();
 
                 if (is_resource($process[$group->id])) {
@@ -80,12 +76,13 @@ class PingController extends Controller
                         Group::unLock($processKey);
                         unset($process[$processKey]);
                         break;
-                    } else {
-                        //INFO: Блокирует проверку других процессов
-                        //if (stream_get_contents($pipes[$processKey][1])) {
-                        //    $procLastOutput[$processKey] = time();
-                        //}
                     }
+                    //else {
+                    //    //INFO: Блокирует проверку других процессов
+                    //    if (stream_get_contents($pipes[$processKey][1])) {
+                    //        $procLastOutput[$processKey] = time();
+                    //    }
+                    //}
                 } else {
                     Group::unLock($processKey);
                     unset($process[$processKey]);
@@ -94,18 +91,18 @@ class PingController extends Controller
             }
 
             usleep(1000000);
-        };
+        }
     }
 
-    public function actionPingGroup($groupId)
+    public function actionPingGroup(int $groupId)
     {
         //Первыми идут объекты которые в прошлырй раз пинговались без ошибки
-        /** @var \app\models\Object[]|TimestampBehavior[] $objects */
-        $objects = Object::find()
+        /** @var PingObject[] $objects */
+        $objects = PingObject::find()
             ->where(['group_id' => $groupId, 'is_disable' => false])
-            ->orderBy('status DESC')
+            ->orderBy(['status' => SORT_DESC])
             ->all();
-        //->select(['id', 'ip', 'port', 'port_udp', 'status', 'avg_rtt', 'updated']) Не сохраняет запись если так выбирать
+        //->select(['id', 'ip', 'port', 'port_udp', 'status', 'avg_rtt', 'updated_at']) Не сохраняет запись если так выбирать
 
         //Перебераем объекты внутри группы
         foreach ($objects as $object) {
@@ -115,7 +112,7 @@ class PingController extends Controller
 
             //tcp
             if ($resStatus == Log::EVENT_ERROR && $object->port > 0) {
-                if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
+                if ($this->pingByNPing($object->ip, $object->port, false) !== null) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
                     $avgRttTmp = $this->pingByNPing($object->ip, $object->port, false, self::AVG_RTT_COUNT_PACKAGES, self::AVG_RTT_DELAY_TCP_AND_UDP);
@@ -127,7 +124,7 @@ class PingController extends Controller
 
             //udp
             if ($resStatus == Log::EVENT_ERROR && $object->port_udp > 0) {
-                if ($this->pingByNPing($object->ip, $object->port, false) !== false) {
+                if ($this->pingByNPing($object->ip, $object->port, false) !== null) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
                     $avgRttTmp = $this->pingByNPing($object->ip, $object->port, true, self::AVG_RTT_COUNT_PACKAGES, self::AVG_RTT_DELAY_TCP_AND_UDP);
@@ -139,7 +136,7 @@ class PingController extends Controller
 
             //icmp
             if ($resStatus == Log::EVENT_ERROR && $object->port == 0 && $object->port_udp == 0) {
-                if ($this->pingByPing($object->ip) !== false) {
+                if ($this->pingByPing($object->ip) !== null) {
                     $resStatus = Log::EVENT_GOOD;
                     //Посылаем self::COUNT_AVG_RTT_PACKAGES пакетов, чтоб узнать среднее время отклика
                     $avgRttTmp = $this->pingByPing($object->ip, self::AVG_RTT_COUNT_PACKAGES, self::AVG_RTT_DELAY_ICMP);
@@ -165,21 +162,15 @@ class PingController extends Controller
 
                 $object->save();
             } else {
-                $object->touch('updated');
+                $object->touch('updated_at');
             }
         }
     }
 
-    /**
-     * @param string $ip
-     * @param int $count
-     * @param float $delay
-     * @return bool|float
-     */
-    protected function pingByPing($ip, $count = 1, $delay = 0.0)
+    protected function pingByPing(string $ip, int $count = 1, float $delay = 0.0): ?float
     {
         if ($ip == '') {
-            return false;
+            return null;
         }
 
         $cmd = 'ping';
@@ -192,20 +183,18 @@ class PingController extends Controller
         $cmd .= ' ' . $ip;
 
         $response = shell_exec($cmd);
-        if (
-            strstr($response, '0 packets received') === false &&
-            preg_match('/= \d+\.\d+\/(\d+\.\d+)\/\d+\.\d+\/\d+\.\d+ ms/i', $response, $matches)
-        ) {
+
+        if (strstr($response, '0 packets received') === false && preg_match('/= \d+\.\d+\/(\d+\.\d+)\/\d+\.\d+\/\d+\.\d+ ms/i', $response, $matches)) {
             return floatval($matches[1]);
         }
 
-        return false;
+        return null;
     }
 
-    protected function pingByNPing($ip, $port, $isUdp = false, $count = 1, $delay = 0.0)
+    protected function pingByNPing(string $ip, string $port, bool $isUdp = false, int $count = 1, float $delay = 0.0): ?float
     {
         if ($ip == '' || $port <= 0) {
-            return false;
+            return null;
         }
 
         $cmd = 'nping';
@@ -228,6 +217,6 @@ class PingController extends Controller
             return floatval($matches[1]);
         }
 
-        return false;
+        return null;
     }
 }

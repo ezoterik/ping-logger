@@ -1,12 +1,16 @@
 <?php
-use yii\helpers\Html;
-
 /**
- * @var \yii\web\View $this
- * @var \yii\mail\BaseMessage $content
+ * @var $this View view component instance
+ * @var $message MessageInterface the message being composed
+ * @var $content string main view render result
  */
+
+use yii\helpers\Html;
+use yii\mail\MessageInterface;
+use yii\web\View;
+
+$this->beginPage();
 ?>
-<?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -20,4 +24,5 @@ use yii\helpers\Html;
     <?php $this->endBody() ?>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php
+$this->endPage();

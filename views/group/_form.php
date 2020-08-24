@@ -1,28 +1,22 @@
 <?php
-
-use kartik\icons\Icon;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
 /**
- * @var yii\web\View $this
- * @var app\models\Group $model
- * @var yii\widgets\ActiveForm $form
+ * @var View $this
+ * @var Group $model
+ * @var ActiveForm $form
  */
+
+use app\models\Group;
+use kartik\icons\Icon;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
+use yii\web\View;
+
+$form = ActiveForm::begin();
+echo $form->field($model, 'name')->textInput(['maxlength' => true]);
+echo $form->field($model, 'is_disable')->checkbox();
 ?>
-
-<div class="group-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'is_disable')->checkbox() ?>
-
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Icon::show('check') . Yii::t('app', 'Create') : Icon::show('save') . Yii::t('app', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Icon::show('check') . Yii::t('app', 'Create') : Icon::show('save', ['framework' => Icon::FAR]) . Yii::t('app', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+<?php
+ActiveForm::end();

@@ -3,81 +3,73 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
-use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "{{%group}}".
- *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property bool $is_disable
- * @property string $lock_date
+ * @property int $lock_at
  *
- * @property \app\models\Object[] $objects
+ * @property PingObject[] $objects
  */
 class Group extends ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%group}}';
     }
 
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
-        if (parent::beforeDelete()) {
-            //Удаляем вложенные объекты
-            foreach ($this->objects as $object) {
-                $object->delete();
-            }
-
-            return true;
-        } else {
+        if (!parent::beforeDelete()) {
             return false;
         }
+
+        //TODO: Перевести на вторичные ключи
+        //Удаляем вложенные объекты
+        foreach ($this->objects as $object) {
+            $object->delete();
+        }
+
+        return true;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            [['name'], 'required'],
-            [['name'], 'trim'],
-            [['name'], 'string', 'max' => 255],
-            [['name'], 'unique'],
-            [['is_disable'], 'boolean'],
+            ['name', 'required'],
+            ['name', 'trim'],
+            ['name', 'string', 'max' => 255],
+            ['name', 'unique'],
+            ['is_disable', 'boolean'],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Title'),
-            'is_disable' => Yii::t('app', 'Is Disable'),
-            'lock_date' => Yii::t('app', 'Lock Date'),
+            'is_disable' => Yii::t('app', 'Is disable'),
+            'lock_at' => Yii::t('app', 'Lock date'),
         ];
     }
 
-    public function getObjects()
+    public function getObjects(): ActiveQuery
     {
-        return $this->hasMany(Object::className(), ['group_id' => 'id']);
+        return $this->hasMany(PingObject::class, ['group_id' => 'id']);
     }
 
-    public static function getAllList()
+    public static function getAllList(): array
     {
-        $models = self::find()->asArray()->orderBy('name')->all();
-
-        return ArrayHelper::map($models, 'id', 'name');
+        return self::find()
+            ->select('name')
+            ->orderBy('name')
+            ->indexBy('id')
+            ->asArray()
+            ->column();
     }
 
     /**
@@ -86,30 +78,39 @@ class Group extends ActiveRecord
      *
      * @param array $groupIds
      */
-    public static function lock(array $groupIds)
+    public static function lock(array $groupIds): void
     {
-        if (count($groupIds) == 0) {
+        if (!$groupIds) {
             return;
         }
 
-        self::updateAll(['lock_date' => new Expression('NOW()')], ['id' => $groupIds]);
+        self::updateAll(
+            ['lock_at' => time()],
+            ['id' => $groupIds]
+        );
     }
 
     /**
-     * Уберает у группы защиту от параллельного пингования группы
+     * Убирает у группы защиту от параллельного пингования группы
      *
      * @param int $groupId
      */
-    public static function unLock($groupId)
+    public static function unLock(int $groupId): void
     {
-        self::updateAll(['lock_date' => '0000-00-00 00:00:00'], ['id' => $groupId]);
+        self::updateAll(
+            ['lock_at' => null],
+            ['id' => $groupId]
+        );
     }
 
     /**
-     * Уберает у групп блокировку, если блокировка висит слишком долго (зависла)
+     * Убирает у групп блокировку, если блокировка висит слишком долго (зависла)
      */
-    public static function unLockOld()
+    public static function unLockOld(): void
     {
-        self::updateAll(['lock_date' => '0000-00-00 00:00:00'], 'lock_date != "0000-00-00 00:00:00" AND lock_date < (NOW() - interval 15 minute)');
+        self::updateAll(
+            ['lock_at' => null],
+            'lock_at IS NOT NULL AND lock_at < (UNIX_TIMESTAMP() - ' . (UTC_HOUR * 15) . ')'
+        );
     }
 }
