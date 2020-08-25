@@ -4,11 +4,12 @@ GETTING STARTED
 After you install the application, you have to conduct the following steps to initialize
 the installed application. You only need to do these once for all.
 
-1. Check requirements (run `php ./requirements.php`)
+1. `composer install --no-dev --prefer-dist`
 2. Run command `init` to initialize the application with a specific environment.
-3. Create a new database and adjust the configuration in `config/db-local.php` accordingly.
-4. Apply migrations with console command `yii migrate` or upload exists database dump. This will create tables needed for the application to work.
-5. Set document roots of your Web server like: `/path/to/yii-application/web/`
+3. Check requirements (run `php ./requirements.php`)
+4. Create a new database and adjust the configuration in `config/db-local.php` accordingly.
+5. Apply migrations with console command `yii migrate` or upload exists database dump. This will create tables needed for the application to work.
+6. Set document roots of your Web server like: `/path/to/yii-application/web/`
 
 Also check and edit the other files in the `config/` directory to customize your application.
 
