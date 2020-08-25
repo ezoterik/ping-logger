@@ -9,7 +9,7 @@
         "monitoring",
         "dashboard"
     ],
-    "homepage": "https://bitbucket.org/ezoterik/ping_logger",
+    "homepage": "https://github.com/ezoterik/ping-logger",
     "type": "project",
     "license": "MIT",
     "authors": [
