@@ -20,7 +20,6 @@ class ObjectController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'delete-logs'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
