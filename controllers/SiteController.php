@@ -10,6 +10,7 @@ use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -72,10 +73,10 @@ class SiteController extends Controller
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $objects = PingObject::find()
-            ->orderBy(['status' => SORT_ASC, 'avg_rtt' => SORT_DESC])
-            ->asArray()
-            ->all();
+        //Приходится обворачивать в ArrayHelper::toArray, чтоб срабатывал AttributeTypecastBehavior
+        $objects = ArrayHelper::toArray(
+            PingObject::find()->orderBy(['status' => SORT_ASC, 'avg_rtt' => SORT_DESC])->all()
+        );
 
         $lastErrorEventsDates = (new Query())
             ->select(['object_id', 'MAX(created_at) AS last_error_event'])
@@ -98,11 +99,10 @@ class SiteController extends Controller
         }
         unset($object, $lastErrorEventsDates);
 
-        $groups = Group::find()
-            ->orderBy('name')
-            ->indexBy('id')
-            ->asArray()
-            ->all();
+        //Приходится обворачивать в ArrayHelper::toArray, чтоб срабатывал AttributeTypecastBehavior
+        $groups = ArrayHelper::toArray(
+            Group::find()->orderBy('name')->indexBy('id')->all()
+        );
 
         //Распределяем объекты по группам
         foreach ($objects as $object) {

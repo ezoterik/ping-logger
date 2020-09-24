@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\AttributeTypecastBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -50,6 +51,10 @@ class PingObject extends ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['updated_at'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                 ],
+            ],
+            'typecast' => [
+                'class' => AttributeTypecastBehavior::class,
+                'typecastAfterFind' => true,
             ],
         ];
     }

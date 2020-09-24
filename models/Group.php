@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\AttributeTypecastBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -19,6 +20,16 @@ class Group extends ActiveRecord
     public static function tableName(): string
     {
         return '{{%group}}';
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            'typecast' => [
+                'class' => AttributeTypecastBehavior::class,
+                'typecastAfterFind' => true,
+            ],
+        ];
     }
 
     public function beforeDelete(): bool

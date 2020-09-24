@@ -129,7 +129,7 @@ var MonitorGroup = React.createClass({
             objectNodes = this.props.group.objects.map(function (object) {
                 var parentGroup = self.props.group;
 
-                if (parentGroup.is_disable === 1 || object.is_disable === 1) {
+                if (parentGroup.is_disable || object.is_disable) {
                     counts.disable++;
                 } else {
                     if (object.status <= 0) {
@@ -155,7 +155,7 @@ var MonitorGroup = React.createClass({
             'panel': true
         };
 
-        if (this.props.group.is_disable === 1) {
+        if (this.props.group.is_disable) {
             classSetOptions['panel-warning'] = true;
         } else if (counts.error > 0) {
             classSetOptions['panel-danger'] = true;
@@ -211,8 +211,8 @@ var MonitorList = React.createClass({
         //Сортируем
         objects = objects.sort(function (a, b) {
             //Сортировка по отключенности
-            var aDisable = (a.parentGroup.is_disable === 1 || a.is_disable === 1);
-            var bDisable = (b.parentGroup.is_disable === 1 || b.is_disable === 1);
+            var aDisable = (a.parentGroup.is_disable || a.is_disable);
+            var bDisable = (b.parentGroup.is_disable || b.is_disable);
 
             if (aDisable > bDisable) {
                 return 1;
@@ -379,7 +379,7 @@ var MonitorObject = React.createClass({
             'obj': true
         };
 
-        if (this.props.parentGroup.is_disable === 1 || this.props.object.is_disable === 1) {
+        if (this.props.parentGroup.is_disable || this.props.object.is_disable) {
             classSetOptions['disable'] = true;
         } else if (this.props.object.status === 0) {
             classSetOptions['bad'] = true;
