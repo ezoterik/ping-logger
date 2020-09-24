@@ -2,7 +2,8 @@
 <ruleset name="Application">
     <!-- https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties -->
     <!-- https://github.com/hellowearemito/yii2-coding-standards/blob/master/Application/ruleset.xml -->
-    <description>A custom coding standard witch is based on "Yii 2 Web Application Framework Coding Standard"</description>
+    <description>A custom coding standard witch is based on "Yii 2 Web Application Framework Coding Standard"
+    </description>
 
     <rule ref="./vendor/yiisoft/yii2-coding-standards/Yii2"/>
 
@@ -11,10 +12,33 @@
         <exclude-pattern>bootstrap.php</exclude-pattern>
     </rule>
 
-    <rule ref="Generic.ControlStructures.InlineControlStructure" />
+    <rule ref="Generic.ControlStructures.InlineControlStructure"/>
 
     <!-- [] instead of array() -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+    <rule ref="Generic.Files.LineEndings"/>
+
+    <rule ref="Generic.Formatting.SpaceAfterNot">
+        <properties>
+            <property name="spacing" value="0"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Metrics.NestingLevel"/>
+
+    <rule ref="Generic.PHP.ForbiddenFunctions"/>
+
+    <rule ref="Generic.WhiteSpace.ArbitraryParenthesesSpacing">
+        <properties>
+            <property name="spacing" value="0"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
 
     <exclude-pattern>/vendor/*</exclude-pattern>
 </ruleset>
