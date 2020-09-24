@@ -349,7 +349,6 @@ var MonitorObject = React.createClass({
     render: function () {
         var d = React.DOM;
 
-        var url = '/object/' + this.props.object.id;
         var title = this.props.object.ip;
         if (this.props.object.port > 0) {
             title += ':' + this.props.object.port;
@@ -391,7 +390,7 @@ var MonitorObject = React.createClass({
         var classes = React.addons.classSet(classSetOptions);
 
         return (
-            <a href={url} id={'o_' + this.props.object.id} className={classes} title={title} data-toggle="tooltip">
+            <a href={this.props.object.url} id={'o_' + this.props.object.id} className={classes} title={title} data-toggle="tooltip">
                 {content}
             </a>
         );

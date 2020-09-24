@@ -10,6 +10,7 @@ use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\ErrorAction;
@@ -88,6 +89,8 @@ class SiteController extends Controller
             if (isset($lastErrorEventsDates[$object['id']])) {
                 $object['lastErrorEventDate'] = Yii::$app->formatter->asDatetime($lastErrorEventsDates[$object['id']]['last_error_event'], 'php:c');
             }
+
+            $object['url'] = Url::toRoute(['object/view', 'id' => $object['id']]);
 
             //Генерация случайного статуса для тестирования
             //$object['status'] = array_rand(Object::$statuses);
